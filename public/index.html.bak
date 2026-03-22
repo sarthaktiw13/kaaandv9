@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="KAAAND — India's underground culture magazine. Fashion, rave, homegrown brands, music. Issue 00 coming soon.">
+<meta property="og:title" content="KAAAND — Issue 00">
+<meta property="og:description" content="India's underground culture magazine. Fashion, rave, homegrown brands, techno.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#080604">
+<title>KAAAND — Issue 00</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="cursor"></div>
+<div id="toast"></div>
+
+<div id="loader">
+  <div class="loader-logo">KAAA<span class="n">N</span>D</div>
+  <div class="loader-bar"></div>
+</div>
+
+<div id="brand-overlay" onclick="if(event.target===this)closeBrand()">
+  <div class="brand-panel">
+    <div class="bpanel-bar">
+      <span class="bpanel-tag" id="bpanel-tag">Brand Profile</span>
+      <button class="bpanel-close" onclick="closeBrand()">&#10005; close</button>
+    </div>
+    <div class="bpanel-body" id="brand-detail"></div>
+  </div>
+</div>
+
+<div id="ticker">
+  <div class="ticker-track">
+    <span>Fashion</span><span>·</span><span>Rave Culture</span><span>·</span><span>Homegrown Brands</span><span>·</span><span>Techno</span><span>·</span><span>Psy-Trance</span><span>·</span><span>India</span><span>·</span><span>Issue 00</span><span>·</span><span>Coming Soon</span><span>·</span>
+    <span>Fashion</span><span>·</span><span>Rave Culture</span><span>·</span><span>Homegrown Brands</span><span>·</span><span>Techno</span><span>·</span><span>Psy-Trance</span><span>·</span><span>India</span><span>·</span><span>Issue 00</span><span>·</span><span>Coming Soon</span><span>·</span>
+  </div>
+</div>
+
+<nav id="nav">
+  <a class="nav-logo" onclick="goTo('cover')">KAAA<span class="n">N</span>D</a>
+  <ul class="nav-links">
+    <li><button onclick="goTo('editorial')">Editorial</button></li>
+    <li><button onclick="goTo('brands-section')">Brands</button></li>
+    <li><button onclick="goTo('music-section')">Music</button></li>
+    <li><button onclick="goTo('newsletter-section')">Newsletter</button></li>
+    <li><button onclick="goTo('shop-section')">Shop</button></li>
+    <li><button onclick="goTo('manifesto-section')">About</button></li>
+    <li><button onclick="goTo('submit-section')">Submit</button></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-cta" onclick="goTo('newsletter-section')">Issue 00</button>
+    <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div id="mobile-drawer">
+  <button onclick="goTo('cover');this.closest('#mobile-drawer').classList.remove('open')">Cover</button>
+  <button onclick="goTo('editorial');this.closest('#mobile-drawer').classList.remove('open')">Editorial</button>
+  <button onclick="goTo('brands-section');this.closest('#mobile-drawer').classList.remove('open')">Brands</button>
+  <button onclick="goTo('music-section');this.closest('#mobile-drawer').classList.remove('open')">Music</button>
+  <button onclick="goTo('newsletter-section');this.closest('#mobile-drawer').classList.remove('open')">Newsletter</button>
+  <button onclick="goTo('shop-section');this.closest('#mobile-drawer').classList.remove('open')">Shop</button>
+  <button onclick="goTo('manifesto-section');this.closest('#mobile-drawer').classList.remove('open')">About</button>
+  <button onclick="goTo('submit-section');this.closest('#mobile-drawer').classList.remove('open')">Submit</button>
+</div>
+
+<!-- COVER -->
+<section id="cover" class="section">
+  <canvas id="cover-canvas"></canvas>
+  <div class="cover-bg"></div>
+  <div class="cover-overlay"></div>
+  <div class="cover-stamp">
+    <div class="stamp-num">00</div>
+    <div class="stamp-label">Vol. I · Issue Zero</div>
+  </div>
+  <div class="cover-content">
+    <div class="cover-badge">Issue 00 — Coming Soon</div>
+    <h1 class="cover-h1">THE<br>NEW<br><span class="r">NOISE</span></h1>
+    <p class="cover-sub">Fashion, music, identity — the underground India that doesn't wait for permission.</p>
+    <div class="cover-tags">
+      <span class="cover-tag">Fashion</span>
+      <span class="cover-tag">Rave Culture</span>
+      <span class="cover-tag">Homegrown Brands</span>
+      <span class="cover-tag">Techno · Psy-Trance</span>
+    </div>
+  </div>
+  <div class="cover-scroll-hint">Scroll</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-cell"><div class="stat-n" id="stat-articles">5</div><div class="stat-label">Features</div></div>
+  <div class="stat-cell"><div class="stat-n" id="stat-brands">8</div><div class="stat-label">Brand Profiles</div></div>
+  <div class="stat-cell"><div class="stat-n" id="stat-tracks">6</div><div class="stat-label">Music Tracks</div></div>
+  <div class="stat-cell"><div class="stat-n accent" id="stat-issue">00</div><div class="stat-label">Issue Zero</div></div>
+</div>
+
+<!-- INTERSTITIAL RAVE -->
+<div class="interstitial">
+  <div class="interstitial-bg" style="background-image:url('/images/rave-red.jpg');"></div>
+  <div class="interstitial-overlay" style="background:linear-gradient(to top,rgba(8,6,4,0.9) 0%,rgba(8,6,4,0.35) 60%,rgba(8,6,4,0.1) 100%);"></div>
+  <div class="interstitial-content">
+    <div class="int-eyebrow">Exhibit A — Editorial</div>
+    <div class="int-title">READ THE<br><span class="r">ISSUE</span></div>
+    <button class="int-cta" onclick="goTo('editorial')">Open Editorial →</button>
+  </div>
+</div>
+
+<!-- EDITORIAL -->
+<section id="editorial" class="section">
+  <div class="sec-head">
+    <div class="sec-label">Editorial — Issue 00</div>
+    <div class="sec-count" id="art-count">5 articles</div>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterArticles(this,'all')">All</button>
+    <button class="filter-btn" onclick="filterArticles(this,'fashion')">Fashion</button>
+    <button class="filter-btn" onclick="filterArticles(this,'rave culture')">Rave Culture</button>
+    <button class="filter-btn" onclick="filterArticles(this,'brands')">Brands</button>
+    <button class="filter-btn" onclick="filterArticles(this,'music')">Music</button>
+    <button class="filter-btn" onclick="filterArticles(this,'identity')">Identity</button>
+  </div>
+  <div class="rx-strip">
+    <div class="rx" style="width:48px;"></div><div class="rxd" style="width:28px;"></div>
+    <div class="rx" style="width:72px;"></div><div class="rxd" style="width:20px;"></div>
+    <div class="rx" style="width:40px;"></div>
+  </div>
+  <div id="article-list-wrap"><div id="article-grid"></div></div>
+  <div id="reader">
+    <button class="reader-back" onclick="closeReader()">&#8592; Back to Editorial</button>
+    <div id="reader-hero" class="reader-hero">
+      <div class="reader-hero-overlay"></div>
+      <div class="reader-hero-text">
+        <div class="reader-kicker" id="r-kicker"></div>
+        <h1 class="reader-title" id="r-title"></h1>
+        <div class="reader-byline" id="r-byline"></div>
+      </div>
+    </div>
+    <div class="reader-body">
+      <div class="reader-sidebar">
+        <div class="sidebar-label">Filed under</div>
+        <div id="r-tags"></div>
+      </div>
+      <div class="reader-content" id="reader-content"></div>
+    </div>
+    <div class="reader-related">
+      <div class="sec-label" style="margin-bottom:16px;">More from Editorial</div>
+      <div class="related-grid" id="reader-related"></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERSTITIAL MUSIC -->
+<div class="interstitial">
+  <div class="interstitial-bg" style="background-image:url('/images/rave-purple.jpg');"></div>
+  <div class="interstitial-overlay" style="background:linear-gradient(135deg,rgba(8,6,4,0.85) 0%,rgba(8,6,4,0.3) 100%);"></div>
+  <div class="interstitial-content">
+    <div class="int-eyebrow">Exhibit C — Music</div>
+    <div class="int-title">FROM THE<br><span class="r">FLOOR</span></div>
+    <button class="int-cta" onclick="goTo('music-section')">Open Music →</button>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<section id="brands-section" class="section">
+  <div class="brands-header">
+    <div class="bh-left">
+      <div class="sec-label" style="margin-bottom:12px;">Exhibit B — Homegrown</div>
+      <div class="bh-title">MADE<br>IN<br><span class="r">INDIA</span></div>
+    </div>
+    <div class="bh-right">
+      <p>Built in bedrooms, warehouses, and late-night drop sessions. Indian homegrown fashion is the most interesting thing happening in the country right now.</p>
+    </div>
+  </div>
+  <div class="rx-strip"><div class="rx" style="width:80px;"></div><div class="rxd" style="width:44px;"></div><div class="rx" style="width:56px;"></div></div>
+  <div class="brands-grid" id="brands-grid"></div>
+</section>
+
+<!-- INTERSTITIAL BRANDS -->
+<div class="interstitial">
+  <div class="interstitial-bg" style="background-image:url('/images/kangan.jpg');"></div>
+  <div class="interstitial-overlay" style="background:linear-gradient(to right,rgba(8,6,4,0.88) 0%,rgba(8,6,4,0.35) 60%,rgba(8,6,4,0.1) 100%);"></div>
+  <div class="interstitial-content">
+    <div class="int-eyebrow">Desi · Underground · Rave</div>
+    <div class="int-title">BUILT WITHOUT<br><span class="r">PERMISSION</span></div>
+  </div>
+</div>
+
+<!-- MUSIC -->
+<section id="music-section" class="section">
+  <div class="music-hero">
+    <canvas id="music-eq-canvas"></canvas>
+    <div class="music-hero-img"></div>
+    <div class="music-hero-overlay"></div>
+    <div class="music-hero-content">
+      <div class="music-big">RAVE<br><span class="r">INDIA</span></div>
+      <div class="music-sub">Techno · Psy-Trance · Ambient · The Underground</div>
+    </div>
+  </div>
+  <div class="music-layout">
+    <div class="music-feature">
+      <div class="sec-label" style="margin-bottom:14px;">Featured Mix — Issue 00</div>
+      <div class="music-feature-title">FROM GOA<br>TO THE <span style="color:var(--red);">WAREHOUSE</span></div>
+      <p class="music-feature-text">India's relationship with electronic music is older and stranger than most people know. It started in the Anjuna Beach parties of the 80s, wound through the psy-trance explosion of the 90s, and arrived here — in the back rooms of Bombay warehouses, in Delhi basements, at dawn on Bengaluru rooftops.</p>
+      <div class="music-embed">
+        <div class="music-embed-label">&#9654; Issue 00 Playlist — KAAAND</div>
+        <iframe style="border-radius:0" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO?utm_source=generator&theme=0" width="100%" height="152" allowfullscreen="" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+    <div id="track-list"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ NEWSLETTER — 3D VINYL SECTION ═══ -->
+<section id="newsletter-section" class="section">
+  <canvas id="vinyl-canvas"></canvas>
+  <div class="nl-overlay"></div>
+  <div class="nl-inner">
+    <div class="nl-left">
+      <div class="sec-label" style="margin-bottom:22px;">The KAAAND Drop</div>
+      <h2 class="nl-title">DON'T<br>MISS<br>A <span class="r">DROP</span></h2>
+      <p class="nl-desc">Every issue, every brand we discover first, every floor report — straight to your inbox before anyone else hears about it.</p>
+      <div class="nl-perks">
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Issue 00 PDF — free for all subscribers</div>
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Early access to Issue 01</div>
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Brand drops before they sell out</div>
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Rave calendars. Floor reports. The underground.</div>
+      </div>
+    </div>
+    <div class="nl-right">
+      <div class="nl-card">
+        <div class="nl-card-label">Join the archive</div>
+        <div class="nl-card-count"><span id="nl-count">—</span> subscribers</div>
+        <div class="nl-card-rule"></div>
+        <div class="nl-field">
+          <input type="email" id="nl-email" class="nl-input" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <button class="nl-submit-btn" id="nl-btn" onclick="submitNL()">
+          Subscribe to KAAAND
+          <span class="nl-btn-icon">&#8594;</span>
+        </button>
+        <div class="nl-msg" id="nl-msg"></div>
+        <div class="nl-fine-print">No spam. No ads. Just KAAAND. Unsubscribe anytime.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SHOP — COMING SOON ═══ -->
+<section id="shop-section" class="section">
+  <canvas id="shop-canvas"></canvas>
+  <div class="shop-overlay"></div>
+  <div class="shop-inner">
+    <div class="shop-left">
+      <div class="shop-cs-stamp">&#9632; Coming Soon</div>
+      <h2 class="shop-title">THE<br>KAAA<span class="r">N</span>D<br>SHOP</h2>
+      <p class="shop-desc">Limited edition merchandise, archival prints, and zine objects from India's underground. Everything drops in small runs. Once it's gone, it's gone.</p>
+      <div class="shop-teaser-grid">
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Apparel</div>
+          <div class="shop-ti-name">Issue 00 Tee</div>
+          <div class="shop-ti-price">&#8377;1,200 — Ltd. 100</div>
+        </div>
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Print</div>
+          <div class="shop-ti-name">Cover Art Print</div>
+          <div class="shop-ti-price">&#8377;800 — Ltd. 50</div>
+        </div>
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Zine</div>
+          <div class="shop-ti-name">Issue 00 Hard Copy</div>
+          <div class="shop-ti-price">&#8377;350 — Ltd. 300</div>
+        </div>
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Object</div>
+          <div class="shop-ti-name">KAAAND Tote</div>
+          <div class="shop-ti-price">&#8377;600 — Ltd. 150</div>
+        </div>
+      </div>
+      <div class="shop-notify-wrap">
+        <input type="email" id="shop-email" class="shop-notify-input" placeholder="Get notified when we drop">
+        <button class="shop-notify-btn" onclick="submitShopNotify()">Notify Me &#8594;</button>
+      </div>
+      <div class="shop-notify-msg" id="shop-msg"></div>
+    </div>
+    <div class="shop-right">
+      <!-- Three.js 3D merch box renders here via #shop-canvas -->
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto-section" class="section">
+  <div class="sec-head"><div class="sec-label">Manifesto — About KAAAND</div></div>
+  <div class="manifesto-layout">
+    <div class="manifesto-left">
+      <div class="mf-photo"></div>
+      <div class="mf-overlay"></div>
+      <div class="mf-content">
+        <div class="sec-label" style="margin-bottom:14px;">Exhibit E</div>
+        <div class="mf-quote">"We didn't ask for a seat at the table.<br>We built our own floor."</div>
+      </div>
+    </div>
+    <div class="manifesto-right">
+      <div class="sec-label" style="margin-bottom:18px;">Who We Are</div>
+      <div class="manifesto-body">
+        <p>KAAAND exists because Indian GenZ culture is the most interesting thing happening right now, and it was never getting the magazine it deserved.</p>
+        <p>This isn't a nostalgia project. This isn't a trend report. This is a document of what's actually happening — in the dressing rooms, on the floors, in the studios, in the streets.</p>
+        <p>We cover fashion because fashion here is political. We cover music because the rave scene is a resistance culture. We profile brands because the homegrown movement is an economic revolution happening in plain sight.</p>
+        <p>KAAAND is a zine in spirit, a magazine in practice. We're based in India and obsessed with what India is becoming — raw, loud, contradictory, and absolutely unignorable.</p>
+      </div>
+      <div class="manifesto-stamp">CLASSIFIED</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBMIT -->
+<section id="submit-section" class="section">
+  <div class="sec-head">
+    <div class="sec-label">Open Call — Issue 01</div>
+    <div class="sec-count">Submissions open</div>
+  </div>
+  <div class="submit-layout">
+    <div class="submit-left">
+      <div class="submit-title">SUBMIT<br>YOUR<br><span class="r">WORK</span></div>
+      <p class="submit-desc">Issue 01 is open. We want writers, photographers, stylists, and artists embedded in Indian underground culture.</p>
+      <ul class="submit-list">
+        <li>Fashion editorials &amp; photography</li>
+        <li>Cultural essays &amp; criticism</li>
+        <li>Brand profiles &amp; interviews</li>
+        <li>Music &amp; rave scene reporting</li>
+        <li>Illustration &amp; graphic work</li>
+        <li>Poetry &amp; experimental writing</li>
+      </ul>
+    </div>
+    <div class="submit-right">
+      <div class="sec-label" style="margin-bottom:24px;">Get in touch</div>
+      <form id="submit-form" novalidate>
+        <div class="form-group"><label>Your Name</label><input type="text" name="name" placeholder="First Last" required></div>
+        <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="you@example.com" required></div>
+        <div class="form-group">
+          <label>Submission Type</label>
+          <select name="type" required>
+            <option value="">Select one</option>
+            <option>Fashion Editorial</option><option>Written Essay</option>
+            <option>Photography</option><option>Brand Profile</option>
+            <option>Music / Rave Culture</option><option>Illustration</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tell us about your submission</label><textarea name="message" placeholder="Describe your idea..." required></textarea></div>
+        <div class="form-msg" id="form-msg"></div>
+        <button type="submit" class="form-submit" id="submit-btn">Send It &#8594;</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="foot-logo">KAAA<span class="n">N</span>D</div>
+  <div class="foot-copy">&#169; 2026 KAAAND — kaaand.xyz</div>
+  <div class="foot-links">
+    <a onclick="goTo('manifesto-section')">About</a>
+    <a onclick="goTo('newsletter-section')">Newsletter</a>
+    <a onclick="goTo('shop-section')">Shop</a>
+    <a onclick="goTo('submit-section')">Submit</a>
+    <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</footer>
+
+<nav id="mobile-nav">
+  <button class="mn-btn active" data-section="cover" onclick="goTo('cover')"><div class="mn-dot"></div><span class="mn-lbl">Cover</span></button>
+  <button class="mn-btn" data-section="editorial" onclick="goTo('editorial')"><div class="mn-dot"></div><span class="mn-lbl">Edit.</span></button>
+  <button class="mn-btn" data-section="brands" onclick="goTo('brands-section')"><div class="mn-dot"></div><span class="mn-lbl">Brands</span></button>
+  <button class="mn-btn" data-section="music" onclick="goTo('music-section')"><div class="mn-dot"></div><span class="mn-lbl">Music</span></button>
+  <button class="mn-btn" data-section="newsletter" onclick="goTo('newsletter-section')"><div class="mn-dot"></div><span class="mn-lbl">Drop</span></button>
+  <button class="mn-btn" data-section="shop" onclick="goTo('shop-section')"><div class="mn-dot"></div><span class="mn-lbl">Shop</span></button>
+  <button class="mn-btn" data-section="submit" onclick="goTo('submit-section')"><div class="mn-dot"></div><span class="mn-lbl">Submit</span></button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/analytics.js"></script>
+</body>
+</html>
