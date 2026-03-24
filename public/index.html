@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="KAAAND — India's underground culture magazine. Fashion, rave, homegrown brands, music. Issue 00 coming soon.">
+<meta property="og:title" content="KAAAND — Issue 00">
+<meta property="og:description" content="India's underground culture magazine. Fashion, rave, homegrown brands, techno.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#080604">
+<title>KAAAND — Issue 00</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="cursor"></div>
+<div id="toast"></div>
+
+<div id="loader">
+  <div class="loader-logo">KAAA<span class="n">N</span>D</div>
+  <div class="loader-bar"></div>
+</div>
+
+<div id="brand-overlay" onclick="if(event.target===this)closeBrand()">
+  <div class="brand-panel">
+    <div class="bpanel-bar">
+      <span class="bpanel-tag" id="bpanel-tag">Brand Profile</span>
+      <button class="bpanel-close" onclick="closeBrand()">&#10005; close</button>
+    </div>
+    <div class="bpanel-body" id="brand-detail"></div>
+  </div>
+</div>
+
+<div id="ticker">
+  <div class="ticker-track">
+    <span>The mainstream never saw this coming</span><span>·</span>
+    <span>The floor has always been ours</span><span>·</span>
+    <span>India's GenZ doesn't need your approval</span><span>·</span>
+    <span class="redacted-tick">██████</span><span>·</span>
+    <span>We document. We don't curate.</span><span>·</span>
+    <span>kaaand.xyz</span><span>·</span>
+    <span>Issue 00</span><span>·</span>
+    <span>They weren't ready</span><span>·</span>
+    <span class="redacted-tick">████ ████ ████</span><span>·</span>
+    <span>The mainstream never saw this coming</span><span>·</span>
+    <span>The floor has always been ours</span><span>·</span>
+    <span>India's GenZ doesn't need your approval</span><span>·</span>
+    <span class="redacted-tick">██████</span><span>·</span>
+    <span>We document. We don't curate.</span><span>·</span>
+    <span>kaaand.xyz</span><span>·</span>
+    <span>Issue 00</span><span>·</span>
+    <span>They weren't ready</span><span>·</span>
+    <span class="redacted-tick">████ ████ ████</span><span>·</span>
+  </div>
+</div>
+
+<nav id="nav">
+  <a class="nav-logo" onclick="goTo('cover')">KAAA<span class="n">N</span>D</a>
+  <ul class="nav-links">
+    <li><button onclick="goTo('editorial')">Editorial</button></li>
+    <li><button onclick="goTo('brands-section')">Brands</button></li>
+    <li><button onclick="goTo('music-section')">Music</button></li>
+    <li><button onclick="goTo('newsletter-section')">Newsletter</button></li>
+    <li><button onclick="goTo('shop-section')">Shop</button></li>
+    <li><button onclick="goTo('manifesto-section')">About</button></li>
+    <li><button onclick="goTo('submit-section')">Submit</button></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-cta" onclick="goTo('newsletter-section')">Get Issue 00</button>
+    <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div id="mobile-drawer">
+  <button onclick="goTo('cover');this.closest('#mobile-drawer').classList.remove('open')">Cover</button>
+  <button onclick="goTo('editorial');this.closest('#mobile-drawer').classList.remove('open')">Editorial</button>
+  <button onclick="goTo('brands-section');this.closest('#mobile-drawer').classList.remove('open')">Brands</button>
+  <button onclick="goTo('music-section');this.closest('#mobile-drawer').classList.remove('open')">Music</button>
+  <button onclick="goTo('newsletter-section');this.closest('#mobile-drawer').classList.remove('open')">Newsletter</button>
+  <button onclick="goTo('shop-section');this.closest('#mobile-drawer').classList.remove('open')">Shop</button>
+  <button onclick="goTo('manifesto-section');this.closest('#mobile-drawer').classList.remove('open')">About</button>
+  <button onclick="goTo('submit-section');this.closest('#mobile-drawer').classList.remove('open')">Submit</button>
+</div>
+
+<!-- ══ COVER ══ -->
+<section id="cover" class="section">
+  <canvas id="cover-canvas"></canvas>
+  <div class="cover-bg"></div>
+  <div class="cover-overlay"></div>
+  <div class="cover-stamp">
+    <div class="stamp-num">00</div>
+    <div class="stamp-label">Vol. I · Issue Zero</div>
+  </div>
+  <div class="cover-content">
+    <div class="cover-badge">Issue 00 — The Kaaand Has Begun</div>
+    <h1 class="cover-h1">THE<br>NEW<br><span class="r">NOISE</span></h1>
+    <p class="cover-sub">India's underground didn't ask for coverage. It built itself in the dark while everyone was looking somewhere else. This is what it looks like.</p>
+    <div class="cover-tags">
+      <span class="cover-tag">Not your India</span>
+      <span class="cover-tag">The floor speaks</span>
+      <span class="cover-tag">No gatekeepers</span>
+      <span class="cover-tag">The kaaand starts here</span>
+    </div>
+  </div>
+  <div class="cover-scroll-hint">Scroll</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-cell"><div class="stat-n" id="stat-articles">5</div><div class="stat-label">Features</div></div>
+  <div class="stat-cell"><div class="stat-n" id="stat-brands">8</div><div class="stat-label">Brand Profiles</div></div>
+  <div class="stat-cell"><div class="stat-n" id="stat-tracks">6</div><div class="stat-label">Music Tracks</div></div>
+  <div class="stat-cell"><div class="stat-n accent" id="stat-issue">00</div><div class="stat-label">Issue Zero</div></div>
+</div>
+
+<!-- INTERSTITIAL RAVE -->
+<div class="interstitial">
+  <div class="interstitial-bg" style="background-image:url('/images/rave-red.jpg');"></div>
+  <div class="interstitial-overlay" style="background:linear-gradient(to top,rgba(8,6,4,0.9) 0%,rgba(8,6,4,0.35) 60%,rgba(8,6,4,0.1) 100%);"></div>
+  <div class="interstitial-content">
+    <div class="int-eyebrow">Exhibit A — Editorial</div>
+    <div class="int-title">NOBODY<br>GAVE US<br><span class="r">PERMISSION</span></div>
+    <button class="int-cta" onclick="goTo('editorial')">Read the issue →</button>
+  </div>
+</div>
+
+<!-- ══ EDITORIAL ══ -->
+<section id="editorial" class="section section-tall">
+  <canvas id="editorial-canvas"></canvas>
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-label">Editorial — Issue 00</div>
+      <div class="sec-count" id="art-count">5 articles</div>
+    </div>
+
+    <!-- Redacted intro block -->
+    <div class="redacted-block">
+      <div class="redacted-header">
+        <span class="redact-tag">DOCUMENT REF: KAAAND-00-EDITORIAL</span>
+        <span class="redact-tag">CLASSIFICATION: PUBLIC</span>
+      </div>
+      <div class="redacted-lines">
+        <div class="rline"><span class="rx-bar" style="width:120px;"></span> Fashion, rave culture, and the <span class="rx-bar" style="width:60px;"></span> that nobody wrote about.</div>
+        <div class="rline"><span class="rx-bar" style="width:80px;"></span> Five writers. Five arguments. Zero <span class="rx-bar" style="width:90px;"></span>.</div>
+        <div class="rline">India, <span class="rx-bar" style="width:40px;"></span>, underground, 2026. The <span class="rx-bar" style="width:110px;"></span> is documented here.</div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterArticles(this,'all')">All</button>
+      <button class="filter-btn" onclick="filterArticles(this,'fashion')">Fashion</button>
+      <button class="filter-btn" onclick="filterArticles(this,'rave culture')">Rave Culture</button>
+      <button class="filter-btn" onclick="filterArticles(this,'brands')">Brands</button>
+      <button class="filter-btn" onclick="filterArticles(this,'music')">Music</button>
+      <button class="filter-btn" onclick="filterArticles(this,'identity')">Identity</button>
+    </div>
+    <div class="rx-strip">
+      <div class="rx" style="width:48px;"></div><div class="rxd" style="width:28px;"></div>
+      <div class="rx" style="width:72px;"></div><div class="rxd" style="width:20px;"></div>
+      <div class="rx" style="width:40px;"></div>
+    </div>
+    <div id="article-list-wrap"><div id="article-grid"></div></div>
+    <div id="reader">
+      <button class="reader-back" onclick="closeReader()">&#8592; Back to Editorial</button>
+      <div id="reader-hero" class="reader-hero">
+        <div class="reader-hero-overlay"></div>
+        <div class="reader-hero-text">
+          <div class="reader-kicker" id="r-kicker"></div>
+          <h1 class="reader-title" id="r-title"></h1>
+          <div class="reader-byline" id="r-byline"></div>
+        </div>
+      </div>
+      <div class="reader-body">
+        <div class="reader-sidebar">
+          <div class="sidebar-label">Filed under</div>
+          <div id="r-tags"></div>
+        </div>
+        <div class="reader-content" id="reader-content"></div>
+      </div>
+      <div class="reader-related">
+        <div class="sec-label" style="margin-bottom:16px;">More from Editorial</div>
+        <div class="related-grid" id="reader-related"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERSTITIAL MUSIC -->
+<div class="interstitial">
+  <div class="interstitial-bg" style="background-image:url('/images/rave-purple.jpg');"></div>
+  <div class="interstitial-overlay" style="background:linear-gradient(135deg,rgba(8,6,4,0.85) 0%,rgba(8,6,4,0.3) 100%);"></div>
+  <div class="interstitial-content">
+    <div class="int-eyebrow">Exhibit C — Music</div>
+    <div class="int-title">THE FLOOR<br>DOESN'T<br><span class="r">LIE</span></div>
+    <button class="int-cta" onclick="goTo('music-section')">Open Music →</button>
+  </div>
+</div>
+
+<!-- ══ BRANDS ══ -->
+<section id="brands-section" class="section section-tall">
+  <canvas id="brands-canvas"></canvas>
+  <div class="section-inner">
+    <div class="brands-header">
+      <div class="bh-left">
+        <div class="sec-label" style="margin-bottom:12px;">Exhibit B — Homegrown</div>
+        <div class="bh-title">MADE<br>IN<br><span class="r">INDIA</span></div>
+        <!-- Redacted classification box -->
+        <div class="classify-box" style="margin-top:24px;">
+          <div class="classify-label">SUBJECT CLASSIFICATION</div>
+          <div class="classify-row"><span>Label type:</span><span>Homegrown / Independent</span></div>
+          <div class="classify-row"><span>Status:</span><span class="rx-bar" style="width:80px;display:inline-block;"></span></div>
+          <div class="classify-row"><span>Threat to mainstream:</span><span style="color:var(--red);">HIGH</span></div>
+          <div class="classify-row"><span>Investor contact:</span><span class="rx-bar" style="width:60px;display:inline-block;"></span></div>
+        </div>
+      </div>
+      <div class="bh-right">
+        <p>These labels weren't launched. They escaped. Built in Dharavi apartments and Bengaluru basements, priced in runs of fifty, sold out before any publication noticed they existed.</p>
+        <p style="margin-top:14px;">The mainstream fashion industry had a hundred years to care about Dalit makers, queer designers, and bedroom labels from Tier 2 cities. It didn't. So they stopped waiting.</p>
+        <!-- Redacted paragraph -->
+        <div class="rx-para" style="margin-top:18px;">
+          <div class="rline" style="margin-bottom:6px;"><span class="rx-bar" style="width:100%;display:block;height:10px;margin-bottom:5px;"></span></div>
+          <div class="rline" style="margin-bottom:6px;"><span class="rx-bar" style="width:85%;display:block;height:10px;margin-bottom:5px;"></span></div>
+          <div class="rline"><span class="rx-bar" style="width:65%;display:block;height:10px;"></span></div>
+          <div class="redact-tag" style="margin-top:6px;">SECTION REDACTED — LEGAL</div>
+        </div>
+      </div>
+    </div>
+    <div class="rx-strip"><div class="rx" style="width:80px;"></div><div class="rxd" style="width:44px;"></div><div class="rx" style="width:56px;"></div></div>
+    <div class="brands-grid" id="brands-grid"></div>
+  </div>
+</section>
+
+<!-- INTERSTITIAL BRANDS -->
+<div class="interstitial">
+  <div class="interstitial-bg" style="background-image:url('/images/kangan.jpg');"></div>
+  <div class="interstitial-overlay" style="background:linear-gradient(to right,rgba(8,6,4,0.88) 0%,rgba(8,6,4,0.35) 60%,rgba(8,6,4,0.1) 100%);"></div>
+  <div class="interstitial-content">
+    <div class="int-eyebrow">Exhibit B — Homegrown</div>
+    <div class="int-title">THE INDUSTRY<br>WASN'T<br><span class="r">INVITED</span></div>
+  </div>
+</div>
+
+<!-- ══ MUSIC ══ -->
+<section id="music-section" class="section section-tall">
+  <div class="music-hero">
+    <canvas id="music-eq-canvas"></canvas>
+    <div class="music-hero-img"></div>
+    <div class="music-hero-overlay"></div>
+    <div class="music-hero-content">
+      <div class="music-big">RAVE<br><span class="r">INDIA</span></div>
+      <div class="music-sub">Techno · Psy-Trance · Ambient · The Underground</div>
+    </div>
+  </div>
+  <div class="music-layout">
+    <div class="music-feature">
+      <div class="sec-label" style="margin-bottom:14px;">Featured Mix — Issue 00</div>
+      <div class="music-feature-title">THEY TOOK<br>THE CREDIT.<br><span style="color:var(--red);">WE BUILT IT.</span></div>
+      <p class="music-feature-text">Goa trance was made in India by people who weren't Indian, on dancefloors the locals weren't allowed onto, using spiritual imagery taken from a culture that wasn't theirs. The genre went global. India got left outside the story it generated. The scene that exists today — Kohra, Sandunes, BLOT!, the Qilla collective, all of it — was built by a different generation that decided to stop being anyone's backdrop. You're listening to the result.</p>
+      <div class="music-embed">
+        <div class="music-embed-label">&#9654; Issue 00 Playlist — Indian Electronic &amp; Psy-Trance</div>
+        <!-- Replaced with Indian Psytrance / Electronic playlist -->
+        <iframe style="border-radius:0" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX5trt9i14X7j?utm_source=generator&theme=0" width="100%" height="152" allowfullscreen="" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe>
+      </div>
+
+      <!-- Redacted concert notice -->
+      <div class="redacted-notice" style="margin-top:20px;">
+        <div class="rn-label">INCIDENT REPORT · CLASSIFIED</div>
+        <div class="rn-body">
+          <span>Venue: </span><span class="rx-bar" style="width:90px;"></span><span> — Delhi NCR</span><br>
+          <span>Date: </span><span class="rx-bar" style="width:60px;"></span><span> 2026</span><br>
+          <span>Artists: </span><span class="rx-bar" style="width:80px;"></span><span>, Kohra, </span><span class="rx-bar" style="width:50px;"></span><br>
+          <span>Incident: The floor did not go home.</span>
+        </div>
+      </div>
+    </div>
+    <div id="track-list"></div>
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER ══ -->
+<section id="newsletter-section" class="section section-tall">
+  <canvas id="vinyl-canvas"></canvas>
+  <div class="nl-overlay"></div>
+  <div class="nl-inner">
+    <div class="nl-left">
+      <div class="sec-label" style="margin-bottom:22px;">The KAAAND Drop</div>
+      <h2 class="nl-title">FIRST.<br>ALWAYS<br><span class="r">FIRST.</span></h2>
+      <p class="nl-desc">Everything we know before we publish it. Every brand drop before it sells out. Every rave before the location pin changes twice.</p>
+      <div class="nl-perks">
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Issue 00 PDF — yours, no strings, no data harvesting</div>
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Issue 01 before the algorithm decides what you should read</div>
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Brand drops 48hrs early. Some sell in minutes. No restock.</div>
+        <div class="nl-perk"><span class="nl-perk-mark">&#8594;</span>Floor reports, rave calendars — the stuff we can't post publicly</div>
+      </div>
+
+      <!-- Redacted classified mail envelope feel -->
+      <div class="classified-envelope" style="margin-top:28px;">
+        <div class="ce-top"><span class="rx-bar" style="width:40px;"></span> KAAAND INTERNAL DISTRIBUTION <span class="rx-bar" style="width:40px;"></span></div>
+        <div class="ce-body">
+          <div>TO: <span class="rx-bar" style="width:100px;"></span></div>
+          <div>FROM: THE EDITORIAL COLLECTIVE</div>
+          <div>RE: <span class="rx-bar" style="width:80px;"></span> — THE FLOOR REPORT</div>
+          <div class="ce-stamp">DO NOT DISTRIBUTE</div>
+        </div>
+      </div>
+    </div>
+    <div class="nl-right">
+      <div class="nl-card">
+        <div class="nl-card-label">You're either on the list or you're not.</div>
+        <div class="nl-card-count"><span id="nl-count">—</span> subscribers</div>
+        <div class="nl-card-rule"></div>
+        <div class="nl-field">
+          <input type="email" id="nl-email" class="nl-input" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <button class="nl-submit-btn" id="nl-btn" onclick="submitNL()">
+          <span class="nl-btn-text">Subscribe to KAAAND</span>
+          <span class="nl-btn-icon">&#8594;</span>
+        </button>
+        <div class="nl-msg" id="nl-msg"></div>
+        <div class="nl-fine-print">No ads. No brand deals in your face. Just KAAAND.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SHOP ══ -->
+<section id="shop-section" class="section section-tall">
+  <canvas id="shop-canvas"></canvas>
+  <div class="shop-overlay"></div>
+  <div class="shop-inner">
+    <div class="shop-left">
+      <div class="shop-cs-stamp">&#9632; Drops Once. Gone Forever.</div>
+      <h2 class="shop-title">THE<br>KAAA<span class="r">N</span>D<br>SHOP</h2>
+      <p class="shop-desc">Each object exists in the quantity it was made. No restock, no second run. The scarcity isn't a marketing trick — it's the honest description of how we make things.</p>
+      <div class="shop-teaser-grid">
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Apparel</div>
+          <div class="shop-ti-name">Issue 00 Tee</div>
+          <div class="shop-ti-price">&#8377;1,200 — Ltd. 100</div>
+        </div>
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Print</div>
+          <div class="shop-ti-name">Cover Art Print</div>
+          <div class="shop-ti-price">&#8377;800 — Ltd. 50</div>
+        </div>
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Zine</div>
+          <div class="shop-ti-name">Issue 00 Hard Copy</div>
+          <div class="shop-ti-price">&#8377;350 — Ltd. 300</div>
+        </div>
+        <div class="shop-teaser-item">
+          <div class="shop-ti-cat">Object</div>
+          <div class="shop-ti-name">KAAAND Tote</div>
+          <div class="shop-ti-price">&#8377;600 — Ltd. 150</div>
+        </div>
+      </div>
+      <div class="shop-notify-wrap">
+        <input type="email" id="shop-email" class="shop-notify-input" placeholder="Tell us where to send the drop notification">
+        <button class="shop-notify-btn" onclick="submitShopNotify()">Notify Me &#8594;</button>
+      </div>
+      <div class="shop-notify-msg" id="shop-msg"></div>
+    </div>
+    <div class="shop-right"></div>
+  </div>
+</section>
+
+<!-- ══ MANIFESTO ══ -->
+<section id="manifesto-section" class="section section-tall">
+  <canvas id="manifesto-canvas"></canvas>
+  <div class="section-inner">
+    <div class="sec-head"><div class="sec-label">Manifesto — About KAAAND</div></div>
+    <div class="manifesto-layout">
+      <div class="manifesto-left">
+        <div class="mf-photo"></div>
+        <div class="mf-overlay"></div>
+        <div class="mf-content">
+          <div class="sec-label" style="margin-bottom:14px;">Exhibit E</div>
+          <div class="mf-quote">"This country's culture<br>has never needed<br>anyone's<br><span style="color:var(--red);">permission.</span>"</div>
+        </div>
+      </div>
+      <div class="manifesto-right">
+        <div class="sec-label" style="margin-bottom:18px;">Who We Are</div>
+
+        <!-- Redacted file header -->
+        <div class="file-header" style="margin-bottom:20px;">
+          <div class="fh-row"><span class="fh-key">FILE REF:</span><span class="fh-val">KAAAND-00-MANIFESTO</span></div>
+          <div class="fh-row"><span class="fh-key">SUBJECT:</span><span class="fh-val">India's underground culture magazine</span></div>
+          <div class="fh-row"><span class="fh-key">ORIGIN:</span><span class="fh-val"><span class="rx-bar" style="width:80px;"></span></span></div>
+          <div class="fh-row"><span class="fh-key">CLEARANCE:</span><span class="fh-val" style="color:var(--red);">PUBLIC RELEASE AUTHORISED</span></div>
+        </div>
+
+        <div class="manifesto-body">
+          <p>KAAAND exists because the culture that is actually happening in this country — on the floors, in the back rooms, in the Dharavi workspaces, in the Delhi basement parties that end at 1 AM because the city has a curfew designed to kill the scene — has been systematically invisible in every publication that claims to cover it.</p>
+          <p>The mainstream media covers Indian youth culture from the outside in. We don't. We are not a trend report. We are not a discovery platform for brands looking to seem relevant. We are a document, assembled from the inside, by people who were there.</p>
+          <p>We cover fashion because in India, how you dress is a political statement whether you intend it to be or not — and the most interesting people are the ones who intend it. We cover music because the underground electronic scene was built by people who were told this country wasn't ready for it, and they built it anyway.</p>
+          <p>We are not neutral. KAAAND is a record of what this country makes for itself, by itself, on its own terms. The kaaand has started. It doesn't stop.</p>
+        </div>
+
+        <!-- Redacted final line -->
+        <div class="redacted-final" style="margin-top:18px;">
+          <div class="rx-bar" style="width:100%;height:11px;margin-bottom:5px;"></div>
+          <div class="rx-bar" style="width:75%;height:11px;margin-bottom:5px;"></div>
+          <div class="rx-bar" style="width:55%;height:11px;"></div>
+          <div class="redact-tag" style="margin-top:6px;">PARAGRAPHS 4–7 WITHHELD</div>
+        </div>
+
+        <div class="manifesto-stamp">CLASSIFIED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SUBMIT ══ -->
+<section id="submit-section" class="section section-tall">
+  <canvas id="submit-canvas"></canvas>
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-label">Open Call — Issue 01</div>
+      <div class="sec-count">Submissions open</div>
+    </div>
+    <div class="submit-layout">
+      <div class="submit-left">
+        <div class="submit-title">IF YOU<br>WERE<br><span class="r">THERE</span></div>
+        <p class="submit-desc">Issue 01 is open. We want the people who were on the floor, not watching from the bar. The photographer who was inside the circle. The writer who has skin in it.</p>
+
+        <!-- Redacted wanted poster -->
+        <div class="wanted-block">
+          <div class="wb-header">OPEN CALL — ISSUE 01</div>
+          <div class="wb-content">
+            <div class="wb-row"><span class="wb-key">SEEKING:</span><span>Writers, photographers, artists</span></div>
+            <div class="wb-row"><span class="wb-key">LOCATION:</span><span>Anywhere in India</span></div>
+            <div class="wb-row"><span class="wb-key">CRITERIA:</span><span class="rx-bar" style="width:90px;"></span></div>
+            <div class="wb-row"><span class="wb-key">DEADLINE:</span><span>Rolling — we read everything</span></div>
+            <div class="wb-row"><span class="wb-key">COMPENSATION:</span><span style="color:var(--red);">YES. We pay.</span></div>
+          </div>
+        </div>
+
+        <ul class="submit-list">
+          <li>Fashion that makes an argument, not a mood board</li>
+          <li>Essays that would get you unfollowed somewhere</li>
+          <li>Photography from inside the thing, not staged outside it</li>
+          <li>Brand profiles of labels that would never be in Vogue India</li>
+          <li>Rave reporting — from the floor, at 4 AM, in the building</li>
+          <li>Illustration, zine work, anything that doesn't fit anywhere else</li>
+        </ul>
+      </div>
+      <div class="submit-right">
+        <div class="sec-label" style="margin-bottom:24px;">Send it. We read everything personally.</div>
+        <form id="submit-form" novalidate>
+          <div class="form-group"><label>Your Name</label><input type="text" name="name" placeholder="First Last" required></div>
+          <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="you@example.com" required></div>
+          <div class="form-group">
+            <label>Submission Type</label>
+            <select name="type" required>
+              <option value="">Select one</option>
+              <option>Fashion Editorial</option>
+              <option>Written Essay</option>
+              <option>Photography</option>
+              <option>Brand Profile</option>
+              <option>Music / Rave Culture</option>
+              <option>Illustration</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Tell us about your submission</label><textarea name="message" placeholder="Describe your idea..." required></textarea></div>
+          <div class="form-msg" id="form-msg"></div>
+          <button type="submit" class="form-submit" id="submit-btn">Send It, We're Listening &#8594;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="foot-logo">KAAA<span class="n">N</span>D</div>
+  <div class="foot-copy">&#169; 2026 KAAAND — kaaand.xyz</div>
+  <div class="foot-links">
+    <a onclick="goTo('manifesto-section')">About</a>
+    <a onclick="goTo('newsletter-section')">Newsletter</a>
+    <a onclick="goTo('shop-section')">Shop</a>
+    <a onclick="goTo('submit-section')">Submit</a>
+    <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</footer>
+
+<nav id="mobile-nav">
+  <button class="mn-btn active" data-section="cover" onclick="goTo('cover')"><div class="mn-dot"></div><span class="mn-lbl">Cover</span></button>
+  <button class="mn-btn" data-section="editorial" onclick="goTo('editorial')"><div class="mn-dot"></div><span class="mn-lbl">Edit.</span></button>
+  <button class="mn-btn" data-section="brands" onclick="goTo('brands-section')"><div class="mn-dot"></div><span class="mn-lbl">Brands</span></button>
+  <button class="mn-btn" data-section="music" onclick="goTo('music-section')"><div class="mn-dot"></div><span class="mn-lbl">Music</span></button>
+  <button class="mn-btn" data-section="newsletter" onclick="goTo('newsletter-section')"><div class="mn-dot"></div><span class="mn-lbl">Drop</span></button>
+  <button class="mn-btn" data-section="shop" onclick="goTo('shop-section')"><div class="mn-dot"></div><span class="mn-lbl">Shop</span></button>
+  <button class="mn-btn" data-section="submit" onclick="goTo('submit-section')"><div class="mn-dot"></div><span class="mn-lbl">Submit</span></button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/analytics.js"></script>
+</body>
+</html>
