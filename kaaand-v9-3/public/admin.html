@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAAAND Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080604;--surface:#0f0c0a;--paper:#e8ddd0;--red:#8b2e1e;--mid:#5a4f47;--dim:#2a1f1a;--border:rgba(232,221,208,0.08);--f-disp:'Bebas Neue',sans-serif;--f-mono:'IBM Plex Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:14px;}
+body{background:var(--bg);color:var(--paper);font-family:var(--f-mono);font-weight:300;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:var(--f-mono);}
+
+/* AUTH SCREEN */
+#auth-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;}
+.auth-box{width:320px;padding:36px;}
+.auth-logo{font-family:var(--f-disp);font-size:32px;letter-spacing:.18em;margin-bottom:32px;}
+.auth-logo .n{color:var(--red);}
+.auth-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:8px;}
+.auth-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:10px 0;color:var(--paper);font-family:var(--f-mono);font-size:14px;outline:none;transition:border-color .2s;margin-bottom:16px;}
+.auth-input:focus{border-bottom-color:var(--red);}
+.auth-btn{width:100%;font-family:var(--f-disp);font-size:18px;letter-spacing:.14em;background:var(--red);border:none;color:var(--paper);padding:12px;transition:opacity .2s;}
+.auth-btn:hover{opacity:.85;}
+.auth-err{font-size:10px;letter-spacing:.16em;color:var(--red);margin-top:10px;text-transform:uppercase;min-height:14px;}
+
+/* LAYOUT */
+#app{display:none;}
+#app.visible{display:flex;min-height:100vh;}
+.sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--border);padding-top:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);}
+.sidebar-logo{font-family:var(--f-disp);font-size:20px;letter-spacing:.18em;padding:20px 20px 0;display:block;}
+.sidebar-logo .n{color:var(--red);}
+.sidebar-sub{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding:4px 20px 16px;border-bottom:1px solid var(--border);}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);cursor:pointer;border-left:2px solid transparent;transition:all .15s;background:transparent;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;}
+.nav-item:hover{color:var(--paper);}
+.nav-item.on{color:var(--paper);border-left-color:var(--red);background:rgba(232,221,208,.03);}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:var(--dim);transition:background .15s;}
+.nav-item.on .nav-dot{background:var(--red);}
+.main{flex:1;overflow:hidden;}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--border);}
+.topbar-title{font-family:var(--f-disp);font-size:22px;letter-spacing:.08em;}
+.topbar-right{display:flex;gap:10px;align-items:center;}
+.tb-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);border:1px solid var(--border);padding:4px 10px;}
+.refresh-btn{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);background:transparent;border:1px solid var(--border);padding:5px 12px;transition:all .15s;}
+.refresh-btn:hover{color:var(--paper);border-color:var(--mid);}
+
+/* PANELS */
+.panel{display:none;padding:24px 28px;}
+.panel.on{display:block;}
+
+/* METRIC GRID */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+@media(max-width:900px){.metric-grid{grid-template-columns:1fr 1fr;}}
+.metric-card{background:var(--surface);border:1px solid var(--border);padding:16px;}
+.mc-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.mc-val{font-family:var(--f-disp);font-size:28px;letter-spacing:.04em;color:var(--paper);}
+.mc-val.red{color:var(--red);}
+.mc-sub{font-size:9px;letter-spacing:.12em;color:var(--mid);margin-top:3px;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin-top:16px;}
+.data-table{width:100%;border-collapse:collapse;font-size:11px;}
+.data-table th{text-align:left;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding:9px 12px;border-bottom:1px solid var(--border);font-weight:400;}
+.data-table td{padding:10px 12px;border-bottom:1px solid rgba(232,221,208,.04);color:var(--mid);vertical-align:top;}
+.data-table tr:hover td{background:rgba(232,221,208,.02);}
+.td-main{color:var(--paper)!important;font-weight:400;}
+.badge{display:inline-block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;padding:2px 6px;border-radius:2px;}
+.badge-red{background:rgba(139,46,30,.2);color:#c85a3a;}
+.badge-green{background:rgba(90,154,111,.15);color:#5a9a6f;}
+.badge-dim{background:var(--dim);color:var(--mid);}
+
+/* SECTION LABEL */
+.sec-label{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.sec-label::before{content:'';width:16px;height:1px;background:var(--red);flex-shrink:0;}
+
+/* UPLOAD ZONE */
+.upload-zone{border:1px dashed var(--border);padding:32px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:20px;position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--red);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uz-icon{font-size:28px;margin-bottom:8px;color:var(--dim);}
+.uz-title{font-family:var(--f-disp);font-size:18px;letter-spacing:.06em;margin-bottom:6px;}
+.uz-sub{font-size:10px;letter-spacing:.14em;color:var(--dim);}
+
+/* ASSET GRID */
+.asset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:16px;}
+.asset-card{background:var(--surface);border:1px solid var(--border);padding:12px;position:relative;}
+.asset-preview{width:100%;aspect-ratio:1;background:var(--dim);display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;}
+.asset-preview img{width:100%;height:100%;object-fit:cover;}
+.asset-preview .ap-icon{font-size:28px;color:var(--mid);}
+.asset-name{font-size:10px;letter-spacing:.08em;color:var(--mid);word-break:break-all;margin-bottom:4px;}
+.asset-meta{font-size:9px;color:var(--dim);}
+.asset-del{position:absolute;top:6px;right:6px;background:rgba(139,46,30,.8);border:none;color:var(--paper);font-size:9px;letter-spacing:.1em;padding:3px 6px;opacity:0;transition:opacity .15s;cursor:pointer;}
+.asset-card:hover .asset-del{opacity:1;}
+
+/* TOKEN DISPLAY */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px;}
+.token-item{background:var(--surface);border:1px solid var(--border);padding:12px;}
+.token-swatch{width:100%;height:36px;border-radius:2px;margin-bottom:8px;}
+.token-name{font-size:10px;letter-spacing:.08em;color:var(--mid);}
+.token-val{font-size:9px;color:var(--dim);margin-top:2px;}
+
+/* STITCH CONFIG */
+.stitch-box{background:var(--surface);border:1px solid var(--border);padding:20px;margin-bottom:16px;}
+.stitch-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.stitch-row:last-child{border-bottom:none;}
+.stitch-key{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);min-width:140px;flex-shrink:0;}
+.stitch-val{font-size:11px;color:var(--mid);word-break:break-all;flex:1;}
+.stitch-copy{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);background:transparent;border:1px solid var(--border);padding:4px 10px;flex-shrink:0;transition:all .15s;}
+.stitch-copy:hover{color:var(--paper);border-color:var(--mid);}
+
+/* ACTION BUTTONS */
+.action-btn{font-size:10px;letter-spacing:.16em;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--mid);padding:7px 16px;transition:all .15s;margin-right:8px;margin-bottom:8px;}
+.action-btn:hover{color:var(--paper);border-color:var(--mid);}
+.action-btn.danger:hover{color:var(--red);border-color:var(--red);}
+.action-btn.primary{border-color:var(--red);color:var(--red);}
+.action-btn.primary:hover{background:var(--red);color:var(--paper);}
+
+/* CHART */
+.chart-wrap{position:relative;width:100%;height:200px;margin-bottom:20px;}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);padding:10px 18px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper);z-index:9000;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;}
+#toast.show{opacity:1;transform:translateY(0);}
+
+/* EMPTY */
+.empty{padding:40px;text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);}
+
+/* LOADING */
+.loading{display:inline-block;width:12px;height:12px;border:1px solid var(--dim);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-left:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">KAAA<span class="n">N</span>D</div>
+    <label class="auth-label">Admin key</label>
+    <input class="auth-input" type="password" id="key-input" placeholder="Paste your admin key" autocomplete="off">
+    <button class="auth-btn" onclick="doAuth()">Enter →</button>
+    <div class="auth-err" id="auth-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="sidebar">
+    <span class="sidebar-logo">KAAA<span class="n">N</span>D</span>
+    <div class="sidebar-sub">Admin Panel</div>
+    <button class="nav-item on" id="nav-overview"   onclick="showPanel('overview')">  <div class="nav-dot"></div>Overview</button>
+    <button class="nav-item"    id="nav-assets"     onclick="showPanel('assets')">    <div class="nav-dot"></div>Assets</button>
+    <button class="nav-item"    id="nav-analytics"  onclick="showPanel('analytics')"> <div class="nav-dot"></div>Analytics</button>
+    <button class="nav-item"    id="nav-subscribers"onclick="showPanel('subscribers')"><div class="nav-dot"></div>Newsletter</button>
+    <button class="nav-item"    id="nav-submissions"onclick="showPanel('submissions')"><div class="nav-dot"></div>Submissions</button>
+    <button class="nav-item"    id="nav-orders"     onclick="showPanel('orders')">    <div class="nav-dot"></div>Orders</button>
+    <button class="nav-item"    id="nav-stitch"     onclick="showPanel('stitch')">    <div class="nav-dot"></div>Stitch Sync</button>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="panel-title">Overview</div>
+      <div class="topbar-right">
+        <div class="tb-tag" id="uptime-tag">—</div>
+        <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+        <button class="refresh-btn" onclick="doLogout()">← Logout</button>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="panel on" id="panel-overview">
+      <div class="metric-grid" id="overview-metrics"></div>
+      <div class="sec-label">Recent activity</div>
+      <div id="recent-subs-table"></div>
+    </div>
+
+    <!-- ASSETS (Antigravity) -->
+    <div class="panel" id="panel-assets">
+      <div class="sec-label">Upload from Antigravity export</div>
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" id="file-input" multiple accept="image/*,.woff,.woff2,.ttf,.otf,.json,.pdf,.html">
+        <div class="uz-icon">⬆</div>
+        <div class="uz-title">Drop files here</div>
+        <div class="uz-sub">Images · Fonts · Token JSON · Templates<br>Select files from your Antigravity export folder</div>
+      </div>
+      <div id="upload-progress"></div>
+
+      <div class="sec-label" style="margin-top:20px;">Images</div>
+      <div class="asset-grid" id="asset-images"><div class="empty">No images uploaded yet</div></div>
+
+      <div class="sec-label" style="margin-top:20px;">Fonts</div>
+      <div class="asset-grid" id="asset-fonts"><div class="empty">No fonts uploaded yet</div></div>
+
+      <div class="sec-label" style="margin-top:20px;">Design tokens</div>
+      <div class="token-grid" id="asset-tokens"><div class="empty">No tokens uploaded yet</div></div>
+
+      <div class="sec-label" style="margin-top:20px;">Templates</div>
+      <div class="asset-grid" id="asset-templates"><div class="empty">No templates uploaded yet</div></div>
+    </div>
+
+    <!-- ANALYTICS (Stitch stream 1) -->
+    <div class="panel" id="panel-analytics">
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button class="action-btn active-period" onclick="loadAnalytics(7,this)">7 days</button>
+        <button class="action-btn active-period" onclick="loadAnalytics(14,this)">14 days</button>
+        <button class="action-btn active-period" onclick="loadAnalytics(30,this)">30 days</button>
+      </div>
+      <div class="metric-grid" id="analytics-metrics" style="grid-template-columns:repeat(3,1fr);"></div>
+      <div class="sec-label" style="margin-top:20px;">Pageviews over time</div>
+      <div class="chart-wrap"><canvas id="analytics-chart"></canvas></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <div class="sec-label">Top pages</div>
+          <div id="top-paths"></div>
+        </div>
+        <div>
+          <div class="sec-label">Top referrers</div>
+          <div id="top-refs"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <button class="action-btn danger" onclick="clearCollection('analytics')">Clear analytics data</button>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="panel" id="panel-subscribers">
+      <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);" id="nl-metrics"></div>
+      <div style="margin-bottom:16px;">
+        <button class="action-btn primary" onclick="exportCSV('newsletter')">Export CSV</button>
+      </div>
+      <div class="table-wrap"><table class="data-table" id="nl-table"><thead><tr><th>Email</th><th>Source</th><th>Date</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <!-- SUBMISSIONS -->
+    <div class="panel" id="panel-submissions">
+      <div style="margin-bottom:16px;">
+        <button class="action-btn primary" onclick="exportCSV('submissions')">Export CSV</button>
+      </div>
+      <div class="table-wrap"><table class="data-table" id="sub-table"><thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Message</th><th>Date</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="panel" id="panel-orders">
+      <div style="margin-bottom:16px;">
+        <button class="action-btn primary" onclick="exportCSV('orders')">Export CSV</button>
+      </div>
+      <div class="table-wrap"><table class="data-table" id="orders-table"><thead><tr><th>Email</th><th>Name</th><th>Item</th><th>Status</th><th>Date</th></tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <!-- STITCH SYNC -->
+    <div class="panel" id="panel-stitch">
+      <div class="sec-label">Stitch configuration</div>
+      <div class="stitch-box" id="stitch-config">Loading...</div>
+
+      <div class="sec-label" style="margin-top:20px;">How to connect Stitch</div>
+      <div class="stitch-box">
+        <div class="stitch-row"><div class="stitch-key">Source type</div><div class="stitch-val">HTTP — Stitch Import API or custom HTTP source</div></div>
+        <div class="stitch-row"><div class="stitch-key">Export endpoint</div><div class="stitch-val" id="stitch-export-url">/api/stitch/export</div><button class="stitch-copy" onclick="copyStitch('export')">Copy</button></div>
+        <div class="stitch-row"><div class="stitch-key">CSV subs</div><div class="stitch-val">/api/stitch/export.csv?collection=submissions</div><button class="stitch-copy" onclick="copyStitch('csv-subs')">Copy</button></div>
+        <div class="stitch-row"><div class="stitch-key">CSV newsletter</div><div class="stitch-val">/api/stitch/export.csv?collection=newsletter</div><button class="stitch-copy" onclick="copyStitch('csv-nl')">Copy</button></div>
+        <div class="stitch-row"><div class="stitch-key">CSV orders</div><div class="stitch-val">/api/stitch/export.csv?collection=orders</div><button class="stitch-copy" onclick="copyStitch('csv-orders')">Copy</button></div>
+        <div class="stitch-row"><div class="stitch-key">Webhook URL</div><div class="stitch-val">/api/webhooks/stitch</div><button class="stitch-copy" onclick="copyStitch('webhook')">Copy</button></div>
+        <div class="stitch-row"><div class="stitch-key">Auth header</div><div class="stitch-val">Authorization: Bearer &lt;your-admin-key&gt;</div></div>
+        <div class="stitch-row"><div class="stitch-key">Format</div><div class="stitch-val">NDJSON (Singer tap spec) — one JSON object per line</div></div>
+        <div class="stitch-row"><div class="stitch-key">Poll frequency</div><div class="stitch-val">Every 15–60 minutes recommended</div></div>
+      </div>
+
+      <div class="sec-label" style="margin-top:20px;">Test exports</div>
+      <button class="action-btn primary" onclick="testExport()">Preview NDJSON export</button>
+      <button class="action-btn" onclick="clearCollection('stitch_webhooks')">Clear webhook log</button>
+
+      <pre id="export-preview" style="margin-top:16px;background:var(--surface);border:1px solid var(--border);padding:16px;font-size:11px;color:var(--mid);overflow-x:auto;max-height:300px;display:none;line-height:1.7;"></pre>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let ADMIN_KEY = '';
+let analyticsChart = null;
+
+// ── AUTH ──────────────────────────────────────────────────
+async function doAuth() {
+  const key = document.getElementById('key-input').value.trim();
+  if (!key) return;
+  try {
+    const r = await fetch('/api/admin/dashboard', { headers: { 'Authorization': 'Bearer ' + key } });
+    if (r.ok) {
+      ADMIN_KEY = key;
+      sessionStorage.setItem('kaaand_admin', key);
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app').classList.add('visible');
+      loadAll();
+    } else {
+      document.getElementById('auth-err').textContent = 'Invalid key. Check console for the key.';
+    }
+  } catch(e) {
+    document.getElementById('auth-err').textContent = 'Connection error.';
+  }
+}
+
+document.getElementById('key-input').addEventListener('keydown', e => { if(e.key==='Enter') doAuth(); });
+
+function doLogout() {
+  sessionStorage.removeItem('kaaand_admin');
+  ADMIN_KEY = '';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('app').classList.remove('visible');
+}
+
+// Check session
+const saved = sessionStorage.getItem('kaaand_admin');
+if (saved) {
+  ADMIN_KEY = saved;
+  fetch('/api/admin/dashboard', { headers: { 'Authorization': 'Bearer ' + saved } })
+    .then(r => {
+      if (r.ok) { document.getElementById('auth-screen').style.display='none'; document.getElementById('app').classList.add('visible'); loadAll(); }
+      else { sessionStorage.removeItem('kaaand_admin'); }
+    }).catch(()=>{});
+}
+
+// ── PANELS ────────────────────────────────────────────────
+const panelTitles = { overview:'Overview', assets:'Antigravity Assets', analytics:'Analytics', subscribers:'Newsletter', submissions:'Submissions', orders:'Shop Orders', stitch:'Stitch Sync' };
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  document.getElementById('nav-' + id).classList.add('on');
+  document.getElementById('panel-title').textContent = panelTitles[id] || id;
+  if (id === 'analytics') loadAnalytics(7);
+  if (id === 'stitch') loadStitchConfig();
+  if (id === 'assets') loadAssets();
+  if (id === 'subscribers') loadSubscribers();
+  if (id === 'submissions') loadSubmissions();
+  if (id === 'orders') loadOrders();
+}
+
+async function apiGet(path) {
+  const r = await fetch(path, { headers: { 'Authorization': 'Bearer ' + ADMIN_KEY } });
+  if (!r.ok) throw new Error('API error ' + r.status);
+  return r.json();
+}
+
+function toast(msg, duration=3000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), duration);
+}
+
+function fmt(n) { return n >= 10000 ? (n/1000).toFixed(1)+'K' : n.toLocaleString(); }
+function relDate(ts) { const d=Math.floor((Date.now()-new Date(ts).getTime())/86400000); return d===0?'today':d===1?'yesterday':d+'d ago'; }
+
+// ── LOAD ALL ──────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const d = await apiGet('/api/admin/dashboard');
+    const o = d.overview;
+    document.getElementById('uptime-tag').textContent = Math.floor(o.assets||0) + ' assets';
+
+    // Overview metrics
+    document.getElementById('overview-metrics').innerHTML = `
+      <div class="metric-card"><div class="mc-label">Newsletter</div><div class="mc-val">${fmt(o.subscribers)}</div><div class="mc-sub">+${o.newSubs7d} this week</div></div>
+      <div class="metric-card"><div class="mc-label">Submissions</div><div class="mc-val">${fmt(o.submissions)}</div><div class="mc-sub">+${o.newSubs30d} this month</div></div>
+      <div class="metric-card"><div class="mc-label">Pageviews (7d)</div><div class="mc-val red">${fmt(o.pageviews7d)}</div><div class="mc-sub">rolling 7 days</div></div>
+      <div class="metric-card"><div class="mc-label">Shop orders</div><div class="mc-val">${fmt(o.orders)}</div><div class="mc-sub">${o.pendingOrders} pending launch</div></div>
+      <div class="metric-card"><div class="mc-label">Assets</div><div class="mc-val">${fmt(o.assets)}</div><div class="mc-sub">Antigravity uploads</div></div>
+      <div class="metric-card"><div class="mc-label">Stitch hooks</div><div class="mc-val">${fmt(o.stitchWebhooks)}</div><div class="mc-sub">webhooks received</div></div>`;
+
+    // Recent subscribers table
+    const rows = (d.recentSubscribers||[]).map(s=>`<tr><td class="td-main">${s.email}</td><td><span class="badge badge-dim">${s.source||'web'}</span></td><td>${relDate(s.timestamp)}</td></tr>`).join('');
+    document.getElementById('recent-subs-table').innerHTML = `<div class="sec-label" style="margin-top:20px;">Recent subscribers</div><div class="table-wrap"><table class="data-table"><thead><tr><th>Email</th><th>Source</th><th>When</th></tr></thead><tbody>${rows||'<tr><td colspan="3" class="empty">None yet</td></tr>'}</tbody></table></div>`;
+  } catch(e) { toast('Load error: ' + e.message); }
+}
+
+// ── ANALYTICS ─────────────────────────────────────────────
+async function loadAnalytics(days, btn) {
+  if (btn) { document.querySelectorAll('.active-period').forEach(b=>b.style.borderColor=''); btn.style.borderColor='var(--red)'; btn.style.color='var(--paper)'; }
+  try {
+    const d = await apiGet('/api/analytics?days=' + days);
+    document.getElementById('analytics-metrics').innerHTML = `
+      <div class="metric-card"><div class="mc-label">Pageviews</div><div class="mc-val red">${fmt(d.pageviews)}</div><div class="mc-sub">${days}d window</div></div>
+      <div class="metric-card"><div class="mc-label">Events</div><div class="mc-val">${fmt(d.events)}</div><div class="mc-sub">interactions</div></div>
+      <div class="metric-card"><div class="mc-label">Total records</div><div class="mc-val">${fmt(d.total)}</div></div>`;
+
+    // Chart
+    const labels = d.days.map(x=>x.date.slice(5));
+    const data   = d.days.map(x=>x.pageviews);
+    const isDark = true;
+    if (analyticsChart) { analyticsChart.data.labels=labels; analyticsChart.data.datasets[0].data=data; analyticsChart.update(); }
+    else analyticsChart = new Chart(document.getElementById('analytics-chart'),{
+      type:'line', data:{labels,datasets:[{label:'Pageviews',data,borderColor:'#8b2e1e',backgroundColor:'rgba(139,46,30,0.08)',tension:.3,fill:true,pointRadius:2}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'rgba(232,221,208,.35)'},grid:{color:'rgba(232,221,208,.05)'}},y:{ticks:{color:'rgba(232,221,208,.35)',callback:v=>fmt(v)},grid:{color:'rgba(232,221,208,.05)'}}}}
+    });
+
+    // Top paths
+    document.getElementById('top-paths').innerHTML = (d.topPaths||[]).map(p=>`
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;">
+        <span style="color:var(--mid);font-size:10px;">${p.path}</span>
+        <span style="color:var(--paper);font-family:var(--f-disp);font-size:16px;">${fmt(p.views)}</span>
+      </div>`).join('') || '<div class="empty">No data</div>';
+
+    document.getElementById('top-refs').innerHTML = (d.topRefs||[]).map(r=>`
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:11px;">
+        <span style="color:var(--mid);font-size:10px;">${r.referrer||'direct'}</span>
+        <span style="color:var(--paper);font-family:var(--f-disp);font-size:16px;">${fmt(r.count)}</span>
+      </div>`).join('') || '<div class="empty">No data</div>';
+  } catch(e) { toast('Analytics error: ' + e.message); }
+}
+
+// ── SUBSCRIBERS ───────────────────────────────────────────
+async function loadSubscribers() {
+  try {
+    const d = await apiGet('/api/stats');
+    document.getElementById('nl-metrics').innerHTML = `
+      <div class="metric-card"><div class="mc-label">Total subscribers</div><div class="mc-val red">${fmt(d.subscribers)}</div></div>
+      <div class="metric-card"><div class="mc-label">Submissions</div><div class="mc-val">${fmt(d.submissions)}</div></div>
+      <div class="metric-card"><div class="mc-label">Shop orders</div><div class="mc-val">${fmt(d.orders)}</div></div>`;
+    // Fetch full list via stitch export (just newsletter stream)
+    const r = await fetch('/api/stitch/export.csv?collection=newsletter', { headers: { 'Authorization':'Bearer '+ADMIN_KEY } });
+    const csv = await r.text();
+    const lines = csv.split('\n').slice(1).filter(Boolean);
+    const rows = lines.map(l=>{const c=l.match(/"([^"]*)"/g)||[];const v=c.map(x=>x.replace(/^"|"$/g,''));return `<tr><td class="td-main">${v[1]||''}</td><td><span class="badge badge-dim">${v[2]||'website'}</span></td><td>${v[4]?relDate(v[4].replace(/"/g,'')):'—'}</td></tr>`;}).join('');
+    document.querySelector('#nl-table tbody').innerHTML = rows || '<tr><td colspan="3" class="empty">No subscribers yet</td></tr>';
+  } catch(e) { toast('Error: '+e.message); }
+}
+
+// ── SUBMISSIONS ───────────────────────────────────────────
+async function loadSubmissions() {
+  try {
+    const r = await fetch('/api/stitch/export.csv?collection=submissions', { headers: { 'Authorization':'Bearer '+ADMIN_KEY } });
+    const csv = await r.text();
+    const lines = csv.split('\n').slice(1).filter(Boolean);
+    const rows = lines.reverse().map(l=>{
+      const c=l.match(/"([^"]*)"/g)||[];
+      const v=c.map(x=>x.replace(/^"|"$/g,''));
+      return `<tr><td class="td-main">${v[1]||''}</td><td>${v[2]||''}</td><td><span class="badge badge-dim">${v[3]||''}</span></td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${(v[4]||'').slice(0,80)}</td><td>${v[5]?relDate(v[5]):'—'}</td></tr>`;
+    }).join('');
+    document.querySelector('#sub-table tbody').innerHTML = rows || '<tr><td colspan="5" class="empty">No submissions yet</td></tr>';
+  } catch(e) { toast('Error: '+e.message); }
+}
+
+// ── ORDERS ────────────────────────────────────────────────
+async function loadOrders() {
+  try {
+    const d = await apiGet('/api/orders');
+    const rows = [...(d.orders||[])].reverse().map(o=>`<tr><td class="td-main">${o.email}</td><td>${o.name||'—'}</td><td>${o.item||'—'}</td><td><span class="badge ${o.status==='fulfilled'?'badge-green':'badge-dim'}">${o.status}</span></td><td>${relDate(o.timestamp)}</td></tr>`).join('');
+    document.querySelector('#orders-table tbody').innerHTML = rows || '<tr><td colspan="5" class="empty">No orders yet</td></tr>';
+  } catch(e) { toast('Error: '+e.message); }
+}
+
+// ── ASSETS (Antigravity) ──────────────────────────────────
+async function loadAssets() {
+  try {
+    const d = await apiGet('/api/assets');
+    renderAssets('asset-images', d.images||[], 'image');
+    renderAssets('asset-fonts',  d.fonts||[],  'font');
+    renderAssets('asset-templates', d.templates||[], 'template');
+    renderTokens(d.tokens||{});
+  } catch(e) { toast('Error: '+e.message); }
+}
+
+function renderAssets(elId, assets, type) {
+  const el = document.getElementById(elId);
+  if (!assets.length) { el.innerHTML='<div class="empty">No '+type+'s uploaded yet</div>'; return; }
+  el.innerHTML = assets.map(a=>`
+    <div class="asset-card">
+      <div class="asset-preview">
+        ${type==='image' ? `<img src="${a.url}" alt="${a.filename}" onerror="this.style.display='none'">` : `<div class="ap-icon">${type==='font'?'Aa':'📄'}</div>`}
+      </div>
+      <div class="asset-name">${a.filename}</div>
+      <div class="asset-meta">${a.size ? Math.round(a.size/1024)+'KB' : ''}</div>
+      <button class="asset-del" onclick="deleteAsset('${a.url.split('/')[2]}','${a.filename}')">✕</button>
+    </div>`).join('');
+}
+
+function renderTokens(tokens) {
+  const el = document.getElementById('asset-tokens');
+  const entries = Object.entries(tokens);
+  if (!entries.length) { el.innerHTML='<div class="empty">No tokens uploaded yet</div>'; return; }
+  el.innerHTML = entries.slice(0,24).map(([k,v])=>{
+    const isColor = typeof v==='string' && (v.startsWith('#')||v.startsWith('rgb'));
+    return `<div class="token-item">
+      ${isColor ? `<div class="token-swatch" style="background:${v}"></div>` : ''}
+      <div class="token-name">${k}</div>
+      <div class="token-val">${v}</div>
+    </div>`;
+  }).join('');
+}
+
+async function deleteAsset(category, filename) {
+  if (!confirm(`Delete ${filename}?`)) return;
+  try {
+    await fetch(`/api/assets/${category}/${filename}`, { method:'DELETE', headers:{'Authorization':'Bearer '+ADMIN_KEY} });
+    toast('Deleted: ' + filename);
+    loadAssets();
+  } catch(e) { toast('Error: '+e.message); }
+}
+
+// File upload
+document.getElementById('file-input').addEventListener('change', async function() {
+  await uploadFiles(Array.from(this.files));
+  this.value='';
+});
+const uz = document.getElementById('upload-zone');
+uz.addEventListener('dragover', e=>{e.preventDefault();uz.classList.add('drag');});
+uz.addEventListener('dragleave', ()=>uz.classList.remove('drag'));
+uz.addEventListener('drop', async e=>{
+  e.preventDefault(); uz.classList.remove('drag');
+  await uploadFiles(Array.from(e.dataTransfer.files));
+});
+
+async function uploadFiles(files) {
+  if (!files.length) return;
+  const prog = document.getElementById('upload-progress');
+  prog.innerHTML = `<div style="font-size:10px;letter-spacing:.16em;color:var(--mid);padding:8px 0;">Uploading ${files.length} file(s)<span class="loading"></span></div>`;
+  const fd = new FormData();
+  files.forEach(f => fd.append('file', f, f.name));
+  // Convert FormData to multipart manually since fetch handles it
+  try {
+    const r = await fetch('/api/assets/upload', {
+      method:'POST', body:fd,
+      headers:{'Authorization':'Bearer '+ADMIN_KEY}
+    });
+    const d = await r.json();
+    if (d.success) {
+      prog.innerHTML = `<div style="font-size:10px;letter-spacing:.16em;color:#5a9a6f;padding:8px 0;">✓ Uploaded ${d.total} file(s)</div>`;
+      setTimeout(()=>prog.innerHTML='', 3000);
+      loadAssets();
+      toast(`✓ ${d.total} assets uploaded from Antigravity`);
+    } else {
+      prog.innerHTML = `<div style="font-size:10px;color:var(--red);padding:8px 0;">✗ ${d.error}</div>`;
+    }
+  } catch(e) {
+    prog.innerHTML = `<div style="font-size:10px;color:var(--red);padding:8px 0;">✗ Upload failed: ${e.message}</div>`;
+  }
+}
+
+// ── STITCH ────────────────────────────────────────────────
+async function loadStitchConfig() {
+  try {
+    const d = await apiGet('/api/admin/dashboard');
+    const sc = d.stitchConfig;
+    const base = window.location.origin;
+    document.getElementById('stitch-config').innerHTML = `
+      <div class="stitch-row"><div class="stitch-key">Export URL</div><div class="stitch-val">${base}${sc.exportUrl}</div></div>
+      <div class="stitch-row"><div class="stitch-key">CSV endpoint</div><div class="stitch-val">${base}${sc.csvUrl}submissions</div></div>
+      <div class="stitch-row"><div class="stitch-key">Webhook URL</div><div class="stitch-val">${base}${sc.webhookUrl}</div></div>
+      <div class="stitch-row"><div class="stitch-key">Last webhook</div><div class="stitch-val">${sc.lastWebhook?relDate(sc.lastWebhook):'None received yet'}</div></div>`;
+    document.getElementById('stitch-export-url').textContent = base + sc.exportUrl;
+  } catch(e) { document.getElementById('stitch-config').textContent = 'Error loading config'; }
+}
+
+function copyStitch(type) {
+  const base = window.location.origin;
+  const map = {
+    'export':    base + '/api/stitch/export',
+    'csv-subs':  base + '/api/stitch/export.csv?collection=submissions',
+    'csv-nl':    base + '/api/stitch/export.csv?collection=newsletter',
+    'csv-orders':base + '/api/stitch/export.csv?collection=orders',
+    'webhook':   base + '/api/webhooks/stitch',
+  };
+  navigator.clipboard.writeText(map[type]||'').then(()=>toast('Copied to clipboard'));
+}
+
+async function testExport() {
+  try {
+    const r = await fetch('/api/stitch/export', { headers:{'Authorization':'Bearer '+ADMIN_KEY} });
+    const text = await r.text();
+    const el = document.getElementById('export-preview');
+    el.style.display = 'block';
+    el.textContent = text.split('\n').slice(0,20).join('\n') + (text.split('\n').length>20?'\n... (truncated)':'');
+    toast('Export preview loaded');
+  } catch(e) { toast('Error: '+e.message); }
+}
+
+function exportCSV(collection) {
+  const a=document.createElement('a');
+  a.href=`/api/stitch/export.csv?collection=${collection}`;
+  a.setAttribute('download',collection+'.csv');
+  // Need auth header — open in new tab with key in URL is not ideal
+  // Use fetch + blob instead
+  fetch(a.href,{headers:{'Authorization':'Bearer '+ADMIN_KEY}})
+    .then(r=>r.blob()).then(b=>{
+      a.href=URL.createObjectURL(b);
+      a.click();
+      toast('Downloading '+collection+'.csv');
+    }).catch(e=>toast('Export error: '+e.message));
+}
+
+async function clearCollection(col) {
+  if (!confirm(`Clear all ${col} data? This cannot be undone.`)) return;
+  try {
+    await fetch('/api/admin/clear/'+col,{method:'DELETE',headers:{'Authorization':'Bearer '+ADMIN_KEY}});
+    toast('Cleared: '+col);
+    loadAll();
+  } catch(e) { toast('Error: '+e.message); }
+}
+</script>
+</body>
+</html>
