@@ -713,6 +713,30 @@ route('DELETE', '/api/admin/clear/([a-z_]{1,40})', async (req, res, p) => {
 });
 
 // ═══════════════════════════════════════════════════════════
+
+route('GET','/robots\\.txt',(req,res)=>{
+  const b='User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/admin/\nSitemap: https://www.kaaand.xyz/sitemap.xml';
+  res.writeHead(200,{'Content-Type':'text/plain','Cache-Control':'public,max-age=86400'});res.end(b);
+});
+
+route('GET','/sitemap\\.xml',(req,res)=>{
+  const c=rdj(path.join(DATA,'content.json'))||{};
+  const arts=(c.articles||[]);
+  const today=new Date().toISOString().split('T')[0];
+  const base='https://www.kaaand.xyz';
+  const urls=[
+    `<url><loc>${base}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+    `<url><loc>${base}/#editorial</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+    `<url><loc>${base}/#brands-section</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/#music-section</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/#newsletter-section</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${base}/#submit-section</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
+    ...arts.map(a=>`<url><loc>${base}/?article=${a.slug}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>`)
+  ].join('\n  ');
+  const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  ${urls}\n</urlset>`;
+  res.writeHead(200,{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public,max-age=3600'});res.end(xml);
+});
+
 //  MAIN REQUEST HANDLER
 // ═══════════════════════════════════════════════════════════
 const server = http.createServer(async (req, res) => {

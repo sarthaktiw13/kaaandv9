@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private API
+Disallow: /admin
+Disallow: /api/admin/
+Disallow: /api/stitch/
+Disallow: /api/analytics
+
+Sitemap: https://www.kaaand.xyz/sitemap.xml
