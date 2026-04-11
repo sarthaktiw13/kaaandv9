@@ -1378,3 +1378,40 @@ function initThreeSubmit() {
   };
   animate();
 }
+
+// ══════════════════════════════════════════════════════════
+//  DARK / LIGHT MODE TOGGLE
+// ══════════════════════════════════════════════════════════
+(function initTheme() {
+  // Read saved preference, fallback to dark (KAAAND default)
+  const saved = localStorage.getItem('kaaand-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn  = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const isLight = root.getAttribute('data-theme') === 'light';
+    const next    = isLight ? 'dark' : 'light';
+
+    if (next === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+
+    localStorage.setItem('kaaand-theme', next);
+
+    // Announce to screen readers
+    btn.setAttribute('aria-label', next === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+  });
+
+  // Set initial aria-label
+  const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  btn.setAttribute('aria-label', current === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+});

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+(function(){var t=localStorage.getItem('kaaand-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}());
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>KAAAND &#8212; India&#39;s Underground Culture Magazine | Issue 00</title>
@@ -87,6 +90,10 @@
   </ul>
   <div class="nav-right">
     <button class="nav-cta" onclick="goTo('newsletter-section')">Get Issue 00</button>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <span class="tt-icon tt-sun">&#9788;</span>
+      <span class="tt-icon tt-moon">&#9790;</span>
+    </button>
     <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -499,6 +506,7 @@
     <a onclick="goTo('newsletter-section')">Newsletter</a>
     <a onclick="goTo('shop-section')">Shop</a>
     <a onclick="goTo('submit-section')">Submit</a>
+    <a href="/sitemap">Sitemap</a>
     <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
   </div>
 </footer>

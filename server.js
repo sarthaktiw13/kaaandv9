@@ -737,6 +737,12 @@ route('GET','/sitemap\\.xml',(req,res)=>{
   res.writeHead(200,{'Content-Type':'application/xml; charset=utf-8','Cache-Control':'public,max-age=3600'});res.end(xml);
 });
 
+route('GET','/sitemap',(req,res)=>{
+  const fp=path.join(PUB,'sitemap.html');
+  if(fs.existsSync(fp))return serveFile(res,fp,req.headers['if-none-match']);
+  res.writeHead(302,{Location:'/sitemap.xml'});res.end();
+});
+
 //  MAIN REQUEST HANDLER
 // ═══════════════════════════════════════════════════════════
 const server = http.createServer(async (req, res) => {

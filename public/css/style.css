@@ -828,3 +828,107 @@ button { cursor:pointer; font-family:var(--f-mono); }
 .wb-content { display:flex; flex-direction:column; gap:0; }
 .wb-row { display:flex; gap:12px; padding:5px 0; border-bottom:1px solid rgba(232,221,208,0.04); font-family:var(--f-mono); font-size:11px; }
 .wb-key { color:var(--dim); letter-spacing:.12em; text-transform:uppercase; min-width:100px; flex-shrink:0; font-size:9px; }
+
+/* ════════════════════════════════════════════════════
+   LIGHT MODE — variable overrides on [data-theme="light"]
+════════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg:      #F5F0EA;
+  --surface: #EDE6DD;
+  --paper:   #1C1410;
+  --red:     #8B2E1E;
+  --red-dim: rgba(139,46,30,0.2);
+  --mid:     #5A4F47;
+  --dim:     #9C9189;
+  --ghost:   rgba(28,20,16,0.05);
+  --border:  rgba(28,20,16,0.1);
+}
+
+/* Light mode specific element fixes */
+[data-theme="light"] #loader          { background:var(--bg); }
+[data-theme="light"] #grain           { opacity:0.025; }
+[data-theme="light"] .stats-bar       { background:var(--surface); }
+[data-theme="light"] #nav             { background:rgba(245,240,234,0.96); }
+[data-theme="light"] .cover-bg        { filter:brightness(0.85) contrast(1.05); }
+[data-theme="light"] .mf-photo        { filter:brightness(0.8); }
+[data-theme="light"] .music-hero-img  { filter:brightness(0.75); }
+[data-theme="light"] .interstitial-bg { filter:brightness(0.7); }
+[data-theme="light"] #brand-overlay   { background:rgba(245,240,234,0.9); }
+[data-theme="light"] .brand-panel     { background:var(--surface); border-color:rgba(28,20,16,0.12); }
+[data-theme="light"] .manifesto-stamp { border-color:var(--red); color:var(--red); }
+[data-theme="light"] .form-group input,
+[data-theme="light"] .form-group select,
+[data-theme="light"] .form-group textarea {
+  background:var(--bg);
+  color:var(--paper);
+  border-color:rgba(28,20,16,0.15);
+}
+[data-theme="light"] .form-group input::placeholder,
+[data-theme="light"] .form-group textarea::placeholder {
+  color:var(--dim);
+}
+[data-theme="light"] .nl-input {
+  background:var(--bg);
+  color:var(--paper);
+  border-color:rgba(28,20,16,0.15);
+}
+[data-theme="light"] .shop-notify-input {
+  background:var(--bg);
+  color:var(--paper);
+  border-color:rgba(28,20,16,0.15);
+}
+[data-theme="light"] .classify-box,
+[data-theme="light"] .redacted-block,
+[data-theme="light"] .redacted-notice,
+[data-theme="light"] .classified-envelope,
+[data-theme="light"] .file-header,
+[data-theme="light"] .wanted-block {
+  background:rgba(237,230,221,0.6);
+}
+[data-theme="light"] .rx-bar           { background:var(--paper); }
+[data-theme="light"] #seo-content      { display:none; }
+
+/* Smooth colour transition on everything */
+body, body * {
+  transition:
+    background-color 0.3s ease,
+    color            0.3s ease,
+    border-color     0.3s ease;
+}
+/* But NOT transitions that cause jank on animations/transforms */
+canvas,
+.cover-h1,
+.loader-logo,
+.ticker-track,
+#cursor { transition:none !important; }
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle {
+  display:flex; align-items:center; justify-content:center;
+  width:36px; height:36px;
+  background:transparent;
+  border:1px solid var(--border);
+  border-radius:2px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+  transition:border-color .2s, background .2s !important;
+}
+.theme-toggle:hover { border-color:var(--red); background:rgba(139,46,30,0.08); }
+
+.tt-icon {
+  position:absolute;
+  font-size:16px;
+  line-height:1;
+  transition:transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s !important;
+}
+/* Dark mode: show moon, hide sun */
+.tt-sun  { color:var(--paper); transform:translateY(0);    opacity:1; }
+.tt-moon { color:var(--paper); transform:translateY(130%); opacity:0; }
+
+/* Light mode: show sun, hide moon */
+[data-theme="light"] .tt-sun  { transform:translateY(-130%); opacity:0; }
+[data-theme="light"] .tt-moon { transform:translateY(0);     opacity:1; }
+[data-theme="light"] .theme-toggle { border-color:rgba(28,20,16,0.15); }
+[data-theme="light"] .theme-toggle:hover { border-color:var(--red); }

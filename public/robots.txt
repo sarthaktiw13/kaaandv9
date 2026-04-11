@@ -8,3 +8,6 @@ Disallow: /api/stitch/
 Disallow: /api/analytics
 
 Sitemap: https://www.kaaand.xyz/sitemap.xml
+
+# Human-readable sitemap
+# https://www.kaaand.xyz/sitemap

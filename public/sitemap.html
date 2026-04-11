@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Map — KAAAND</title>
+<meta name="description" content="Full site map for KAAAND — India's underground culture magazine. All pages, articles, brands, and sections.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.kaaand.xyz/sitemap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #0E0A09;
+  --paper: #E8DDD0;
+  --red:   #8B2E1E;
+  --mid:   #5A4F47;
+  --dim:   #2A1F1A;
+  --border:rgba(232,221,208,0.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg);
+  color:var(--paper);
+  font-family:'IBM Plex Mono',monospace;
+  font-weight:300;
+  min-height:100vh;
+}
+
+/* NAV */
+nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:rgba(14,10,9,0.96);
+  z-index:100;
+  backdrop-filter:blur(8px);
+}
+.nav-logo {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px; letter-spacing:.18em;
+  color:var(--paper); text-decoration:none;
+}
+.nav-logo span { color:var(--red); }
+.nav-back {
+  font-size:10px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--mid); text-decoration:none;
+  transition:color .15s;
+}
+.nav-back:hover { color:var(--paper); }
+
+/* HEADER */
+.site-header {
+  padding:56px 32px 40px;
+  border-bottom:1px solid var(--border);
+  max-width:900px; margin:0 auto;
+}
+.sh-kicker {
+  font-size:9px; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--red); margin-bottom:10px;
+  display:flex; align-items:center; gap:10px;
+}
+.sh-kicker::before {
+  content:''; display:block; width:18px; height:1.5px; background:var(--red);
+}
+.sh-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(42px,8vw,72px);
+  letter-spacing:.03em; line-height:.9;
+  color:var(--paper);
+}
+.sh-title span { color:var(--red); }
+.sh-meta {
+  margin-top:14px;
+  font-size:11px; letter-spacing:.14em; color:var(--mid);
+  display:flex; gap:24px; flex-wrap:wrap;
+}
+
+/* RX BARS */
+.rx-strip {
+  display:flex; gap:3px; align-items:center; height:4px;
+  margin:32px 0 0;
+}
+.rx  { height:4px; background:var(--red); opacity:.6; border-radius:1px; }
+.rxd { height:4px; background:var(--dim); border-radius:1px; }
+
+/* MAIN GRID */
+.sm-grid {
+  max-width:900px; margin:0 auto;
+  padding:40px 32px 80px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px 48px;
+}
+@media(max-width:620px){
+  .sm-grid { grid-template-columns:1fr; padding:32px 20px 60px; }
+  .site-header { padding:40px 20px 32px; }
+  nav { padding:16px 20px; }
+}
+
+/* SECTION BLOCK */
+.sm-section { display:flex; flex-direction:column; gap:0; }
+.sm-section-full { grid-column:1/-1; }
+
+.sm-label {
+  font-size:8px; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--red); margin-bottom:10px; padding-bottom:8px;
+  border-bottom:1px solid var(--red);
+  display:flex; align-items:center; gap:8px;
+}
+.sm-label-dot {
+  width:5px; height:5px; border-radius:50%; background:var(--red); flex-shrink:0;
+}
+
+.sm-item {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+  text-decoration:none;
+  transition:background .12s;
+}
+.sm-item:last-child { border-bottom:none; }
+.sm-item:hover .sm-item-title { color:var(--red); }
+.sm-item:hover { background:rgba(139,46,30,0.04); margin:0 -8px; padding:9px 8px; border-radius:3px; }
+
+.sm-item-num {
+  font-size:9px; letter-spacing:.1em; color:var(--dim);
+  flex-shrink:0; padding-top:2px; min-width:20px;
+}
+.sm-item-body { display:flex; flex-direction:column; gap:2px; }
+.sm-item-title {
+  font-size:13px; font-weight:400; color:var(--paper);
+  line-height:1.3; transition:color .12s;
+}
+.sm-item-sub {
+  font-size:10px; letter-spacing:.08em; color:var(--mid);
+}
+.sm-item-tag {
+  display:inline-block;
+  font-size:8px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--red); border:1px solid rgba(139,46,30,0.35);
+  padding:1px 6px; border-radius:2px; margin-top:2px;
+  width:fit-content;
+}
+.sm-item-new {
+  font-size:8px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--bg); background:var(--red);
+  padding:1px 6px; border-radius:2px; margin-top:2px;
+  width:fit-content;
+}
+
+/* DIVIDER */
+.sm-divider {
+  grid-column:1/-1;
+  border:none; border-top:1px solid var(--border);
+  margin:8px 0;
+}
+
+/* XML BLOCK */
+.xml-block {
+  grid-column:1/-1;
+  background:rgba(42,31,26,0.4);
+  border:1px solid var(--border);
+  padding:20px 24px;
+  display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;
+  justify-content:space-between;
+}
+.xml-left { display:flex; flex-direction:column; gap:4px; }
+.xml-label { font-size:8px; letter-spacing:.3em; text-transform:uppercase; color:var(--red); }
+.xml-title { font-size:13px; color:var(--paper); }
+.xml-sub { font-size:10px; color:var(--mid); }
+.xml-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--paper); border:1px solid rgba(232,221,208,0.2);
+  padding:8px 16px; text-decoration:none;
+  transition:all .15s; align-self:center;
+}
+.xml-btn:hover { border-color:var(--red); color:var(--red); }
+
+/* FOOTER */
+.sm-footer {
+  border-top:1px solid var(--border);
+  padding:24px 32px;
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:12px;
+  max-width:900px; margin:0 auto;
+}
+.sm-footer-copy { font-size:10px; color:var(--dim); letter-spacing:.12em; }
+.sm-footer-links { display:flex; gap:20px; }
+.sm-footer-links a {
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--mid); text-decoration:none; transition:color .15s;
+}
+.sm-footer-links a:hover { color:var(--paper); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">KAAA<span>N</span>D</a>
+  <a class="nav-back" href="/">&#8592; Back to site</a>
+</nav>
+
+<header class="site-header">
+  <div class="sh-kicker"><span class="sh-kicker"></span>kaaand.xyz / sitemap</div>
+  <h1 class="sh-title">SITE<br><span>MAP</span></h1>
+  <div class="sh-meta">
+    <span>14 URLs indexed</span>
+    <span>Last updated: April 2026</span>
+    <span>Vol. I — Issue 00</span>
+  </div>
+  <div class="rx-strip">
+    <div class="rx" style="width:64px;"></div>
+    <div class="rxd" style="width:32px;"></div>
+    <div class="rx" style="width:48px;"></div>
+    <div class="rxd" style="width:20px;"></div>
+    <div class="rx" style="width:36px;opacity:.35;"></div>
+  </div>
+</header>
+
+<main class="sm-grid">
+
+  <!-- XML SITEMAP LINK -->
+  <div class="xml-block">
+    <div class="xml-left">
+      <div class="xml-label">For search engines</div>
+      <div class="xml-title">XML Sitemap</div>
+      <div class="xml-sub">Submitted to Google Search Console. Updated automatically.</div>
+    </div>
+    <a class="xml-btn" href="/sitemap.xml" target="_blank">View XML &#8594;</a>
+  </div>
+
+  <!-- MAIN PAGES -->
+  <div class="sm-section">
+    <div class="sm-label"><span class="sm-label-dot"></span>Main pages</div>
+
+    <a class="sm-item" href="/">
+      <span class="sm-item-num">01</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Homepage — Cover</span>
+        <span class="sm-item-sub">kaaand.xyz/</span>
+        <span class="sm-item-new">Issue 00 live</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#editorial">
+      <span class="sm-item-num">02</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Editorial</span>
+        <span class="sm-item-sub">kaaand.xyz/#editorial</span>
+        <span class="sm-item-tag">Exhibit A</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">03</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Homegrown Brands</span>
+        <span class="sm-item-sub">kaaand.xyz/#brands-section</span>
+        <span class="sm-item-tag">Exhibit B</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">04</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Music &amp; Rave Culture</span>
+        <span class="sm-item-sub">kaaand.xyz/#music-section</span>
+        <span class="sm-item-tag">Exhibit C</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#newsletter-section">
+      <span class="sm-item-num">05</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Newsletter — The KAAAND Drop</span>
+        <span class="sm-item-sub">kaaand.xyz/#newsletter-section</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#shop-section">
+      <span class="sm-item-num">06</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Shop — Coming Soon</span>
+        <span class="sm-item-sub">kaaand.xyz/#shop-section</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#manifesto-section">
+      <span class="sm-item-num">07</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Manifesto — About KAAAND</span>
+        <span class="sm-item-sub">kaaand.xyz/#manifesto-section</span>
+        <span class="sm-item-tag">Exhibit E</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/#submit-section">
+      <span class="sm-item-num">08</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Submit Your Work — Issue 01</span>
+        <span class="sm-item-sub">kaaand.xyz/#submit-section</span>
+        <span class="sm-item-new">Open call</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- ARTICLES -->
+  <div class="sm-section">
+    <div class="sm-label"><span class="sm-label-dot"></span>Articles — Issue 00</div>
+
+    <a class="sm-item" href="/?article=thrift-economy">
+      <span class="sm-item-num">A1</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">The Thrift Economy</span>
+        <span class="sm-item-sub">Arjun Mehta — Fashion</span>
+        <span class="sm-item-tag">Fashion</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/?article=floors-without-walls">
+      <span class="sm-item-num">A2</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Floors Without Walls</span>
+        <span class="sm-item-sub">Priya Nair — Rave Culture</span>
+        <span class="sm-item-tag">Rave Culture</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/?article=no-logo-required">
+      <span class="sm-item-num">A3</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">No Logo Required</span>
+        <span class="sm-item-sub">Kabir Singh — Brands</span>
+        <span class="sm-item-tag">Brands</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/?article=psy-trance-revival">
+      <span class="sm-item-num">A4</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">The Psy-Trance Revival</span>
+        <span class="sm-item-sub">Ananya Rao — Music</span>
+        <span class="sm-item-tag">Music</span>
+      </div>
+    </a>
+
+    <a class="sm-item" href="/?article=dressing-against-grain">
+      <span class="sm-item-num">A5</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Dressing Against the Grain</span>
+        <span class="sm-item-sub">Siya Kapoor — Identity</span>
+        <span class="sm-item-tag">Identity</span>
+      </div>
+    </a>
+  </div>
+
+  <hr class="sm-divider">
+
+  <!-- BRANDS -->
+  <div class="sm-section">
+    <div class="sm-label"><span class="sm-label-dot"></span>Brand profiles — Exhibit B</div>
+
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B1</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">KAASAW</span>
+        <span class="sm-item-sub">Mumbai — Womenswear</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B2</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">OBLIQUE</span>
+        <span class="sm-item-sub">Bengaluru — Unisex</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B3</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">MURMUR</span>
+        <span class="sm-item-sub">Delhi — Upcycled</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B4</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">NOIR DUST</span>
+        <span class="sm-item-sub">Goa — Accessories</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B5</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">BHUVI</span>
+        <span class="sm-item-sub">Jaipur — Textiles</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B6</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">WILT</span>
+        <span class="sm-item-sub">Hyderabad — Menswear</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B7</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">NEEDLE</span>
+        <span class="sm-item-sub">Chennai — Limited editions</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#brands-section">
+      <span class="sm-item-num">B8</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">FLORA</span>
+        <span class="sm-item-sub">Kolkata — Botanical</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- MUSIC + ADMIN -->
+  <div class="sm-section">
+    <div class="sm-label"><span class="sm-label-dot"></span>Music — Issue 00 playlist</div>
+
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">M1</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Desert Circuit</span>
+        <span class="sm-item-sub">Kohra — Techno</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">M2</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Mangala</span>
+        <span class="sm-item-sub">Sandunes — Electronic</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">M3</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Fluorescent</span>
+        <span class="sm-item-sub">BLOT! — Ambient</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">M4</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Kaal</span>
+        <span class="sm-item-sub">Dualist Inquiry — Indie Electronic</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">M5</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Red Earth</span>
+        <span class="sm-item-sub">Nucleya — Bass</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/#music-section">
+      <span class="sm-item-num">M6</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Shunya</span>
+        <span class="sm-item-sub">Yung.Raj — Hip-Hop</span>
+      </div>
+    </a>
+
+    <div style="height:24px;"></div>
+    <div class="sm-label"><span class="sm-label-dot"></span>System pages</div>
+
+    <a class="sm-item" href="/sitemap">
+      <span class="sm-item-num">S1</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Site Map</span>
+        <span class="sm-item-sub">kaaand.xyz/sitemap</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/sitemap.xml" target="_blank">
+      <span class="sm-item-num">S2</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">XML Sitemap</span>
+        <span class="sm-item-sub">kaaand.xyz/sitemap.xml</span>
+      </div>
+    </a>
+    <a class="sm-item" href="/robots.txt" target="_blank">
+      <span class="sm-item-num">S3</span>
+      <div class="sm-item-body">
+        <span class="sm-item-title">Robots.txt</span>
+        <span class="sm-item-sub">kaaand.xyz/robots.txt</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- API SECTION -->
+  <div class="sm-section sm-section-full">
+    <div class="sm-label"><span class="sm-label-dot"></span>Public API endpoints</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0;">
+      <a class="sm-item" href="/api/articles" target="_blank">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">GET /api/articles</span>
+          <span class="sm-item-sub">All articles (no body)</span>
+        </div>
+      </a>
+      <a class="sm-item" href="/api/brands" target="_blank">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">GET /api/brands</span>
+          <span class="sm-item-sub">All brand profiles</span>
+        </div>
+      </a>
+      <a class="sm-item" href="/api/tracks" target="_blank">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">GET /api/tracks</span>
+          <span class="sm-item-sub">Issue 00 music tracks</span>
+        </div>
+      </a>
+      <a class="sm-item" href="/api/stats" target="_blank">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">GET /api/stats</span>
+          <span class="sm-item-sub">Live site statistics</span>
+        </div>
+      </a>
+      <div class="sm-item">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">POST /api/newsletter</span>
+          <span class="sm-item-sub">Subscribe to newsletter</span>
+        </div>
+      </div>
+      <div class="sm-item">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">POST /api/submit</span>
+          <span class="sm-item-sub">Submit work for Issue 01</span>
+        </div>
+      </div>
+      <div class="sm-item">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">POST /api/orders</span>
+          <span class="sm-item-sub">Shop notify me</span>
+        </div>
+      </div>
+      <a class="sm-item" href="/api/articles/thrift-economy" target="_blank">
+        <span class="sm-item-num">&#9654;</span>
+        <div class="sm-item-body">
+          <span class="sm-item-title">GET /api/articles/:slug</span>
+          <span class="sm-item-sub">Single article with full body</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="sm-footer">
+    <span class="sm-footer-copy">&#169; 2026 KAAAND — kaaand.xyz — Vol. I Issue 00</span>
+    <div class="sm-footer-links">
+      <a href="/">Home</a>
+      <a href="/#submit-section">Submit</a>
+      <a href="/#newsletter-section">Newsletter</a>
+      <a href="/sitemap.xml">XML Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
