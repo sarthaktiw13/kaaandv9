@@ -458,6 +458,7 @@ function initThreeCover() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -679,6 +680,7 @@ function initThreeVinyl() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ── SHOP NOTIFY ───────────────────────────────────────────
@@ -793,6 +795,7 @@ function initThreeMusicEQ() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -980,6 +983,7 @@ function initThreeShop() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1081,6 +1085,7 @@ function initThreeEditorial() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1159,6 +1164,7 @@ function initThreeBrands() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1262,6 +1268,7 @@ function initThreeManifesto() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1377,13 +1384,84 @@ function initThreeSubmit() {
     renderer.render(scene, camera);
   };
   animate();
+  registerThreeScene(renderer, scene);
 }
 
 // ══════════════════════════════════════════════════════════
 //  DARK / LIGHT MODE TOGGLE
 // ══════════════════════════════════════════════════════════
-(function initTheme() {
-  // Read saved preference, fallback to dark (KAAAND default)
+
+// ══════════════════════════════════════════════════════════
+//  THEME SYSTEM — dark / light with Three.js adaptation
+// ══════════════════════════════════════════════════════════
+
+// Helper — is light mode active right now?
+const isLight = () => document.documentElement.getAttribute('data-theme') === 'light';
+
+// Day party palette for Three.js
+const THEME_COLORS = {
+  dark: {
+    bg:        0x080604,
+    particle1: 0x8b2e1e,  // red
+    particle2: 0x2a1f1a,  // dim
+    light1:    0x8b2e1e,  // key light
+    light2:    0xe8ddd0,  // fill light
+    mat1:      0x8b2e1e,
+    mat2:      0x2a1f1a,
+    mat3:      0x1c1410,
+    slab:      0x0f0c0a,
+    beam:      0x8b2e1e,
+    amb:       0.25,
+  },
+  light: {
+    bg:        0xFAF6EF,
+    particle1: 0xE8650A,  // saffron
+    particle2: 0xD4A85A,  // gold
+    light1:    0xE8650A,  // saffron key
+    light2:    0x2D4A7A,  // sky blue fill
+    mat1:      0xC1390D,  // rust orange
+    mat2:      0xD4A85A,  // sand gold
+    mat3:      0xE8DEC8,  // warm paper
+    slab:      0xF0E8D8,
+    beam:      0xE8650A,
+    amb:       0.6,
+  }
+};
+
+// Apply Three.js theme to all running renderers
+const threeRenderers = [];   // registered renderers
+const threeMaterials = [];   // registered { mat, role } objects
+
+function applyThreeTheme() {
+  const t = isLight() ? THEME_COLORS.light : THEME_COLORS.dark;
+  threeRenderers.forEach(({ renderer, scene }) => {
+    renderer.setClearColor(t.bg, 0); // always transparent bg — CSS handles bg colour
+  });
+  threeMaterials.forEach(({ mat, role }) => {
+    if (!mat || !mat.color) return;
+    const hex = t[role] || t.mat1;
+    mat.color.setHex(hex);
+    mat.needsUpdate = true;
+  });
+  // Update directional lights in each scene
+  threeRenderers.forEach(({ scene }) => {
+    scene.traverse(obj => {
+      if (obj.isDirectionalLight || obj.isAmbientLight) {
+        if (obj.userData.role === 'key')  obj.color.setHex(t.light1);
+        if (obj.userData.role === 'fill') obj.color.setHex(t.light2);
+        if (obj.userData.role === 'amb')  { obj.color.setHex(0xffffff); obj.intensity = t.amb; }
+      }
+      if (obj.isPoints && obj.material) {
+        const role = obj.userData.particleRole || 'particle1';
+        obj.material.color.setHex(t[role]);
+        obj.material.needsUpdate = true;
+      }
+    });
+  });
+}
+
+// Anti-FOUC: apply theme before first paint
+(function() {
   const saved = localStorage.getItem('kaaand-theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const theme = saved || (prefersDark ? 'dark' : 'light');
@@ -1396,22 +1474,85 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!btn) return;
 
   btn.addEventListener('click', () => {
-    const isLight = root.getAttribute('data-theme') === 'light';
-    const next    = isLight ? 'dark' : 'light';
-
-    if (next === 'light') {
-      root.setAttribute('data-theme', 'light');
-    } else {
-      root.removeAttribute('data-theme');
-    }
-
+    const next = isLight() ? 'dark' : 'light';
+    if (next === 'light') root.setAttribute('data-theme', 'light');
+    else root.removeAttribute('data-theme');
     localStorage.setItem('kaaand-theme', next);
-
-    // Announce to screen readers
     btn.setAttribute('aria-label', next === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+    // Update all Three.js scenes instantly
+    requestAnimationFrame(applyThreeTheme);
   });
 
   // Set initial aria-label
-  const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  btn.setAttribute('aria-label', current === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+  btn.setAttribute('aria-label', isLight() ? 'Switch to dark mode' : 'Switch to light mode');
+});
+
+// ══════════════════════════════════════════════════════════
+//  THEME SYSTEM — dark / light with Three.js colour swaps
+// ══════════════════════════════════════════════════════════
+
+const isLight = () => document.documentElement.getAttribute('data-theme') === 'light';
+
+const DAY = {
+  bg:0xFAF6EF, p1:0xE8650A, p2:0xD4A85A,
+  kl:0xE8650A, fl:0x2D4A7A, amb:0.65,
+  m1:0xC1390D, m2:0xD4A85A, m3:0xF0E8D8,
+  beam:0xE8650A, slab:0xF0E8D8
+};
+const NIGHT = {
+  bg:0x080604, p1:0x8b2e1e, p2:0x2a1f1a,
+  kl:0x8b2e1e, fl:0xe8ddd0, amb:0.25,
+  m1:0x8b2e1e, m2:0x2a1f1a, m3:0x1c1410,
+  beam:0x8b2e1e, slab:0x0f0c0a
+};
+
+// Registry — scenes call this to register themselves
+const threeScenes = [];
+function registerThreeScene(renderer, scene, matMap) {
+  threeScenes.push({ renderer, scene, matMap: matMap || [] });
+}
+
+function applyThreeTheme() {
+  if (typeof THREE === 'undefined') return;
+  const t = isLight() ? DAY : NIGHT;
+  threeScenes.forEach(({ renderer, scene, matMap }) => {
+    renderer.setClearColor(t.bg, 0);
+    matMap.forEach(({ mat, role }) => {
+      if (mat && mat.color) { mat.color.setHex(t[role] || t.m1); mat.needsUpdate = true; }
+    });
+    scene.traverse(obj => {
+      if (obj.isDirectionalLight) {
+        if (obj.userData.r === 'key')  obj.color.setHex(t.kl);
+        if (obj.userData.r === 'fill') obj.color.setHex(t.fl);
+      }
+      if (obj.isAmbientLight) { obj.color.setHex(0xffffff); obj.intensity = t.amb; }
+      if (obj.isPoints && obj.material && obj.material.color) {
+        obj.material.color.setHex(obj.userData.pr === 2 ? t.p2 : t.p1);
+        obj.material.needsUpdate = true;
+      }
+    });
+  });
+}
+
+// Anti-FOUC: runs synchronously before render
+(function() {
+  const s = localStorage.getItem('kaaand-theme');
+  if (s === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  else if (!s && !window.matchMedia('(prefers-color-scheme: dark)').matches)
+    document.documentElement.setAttribute('data-theme', 'light');
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    const next = isLight() ? 'dark' : 'light';
+    if (next === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('kaaand-theme', next);
+    btn.setAttribute('aria-label', next === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+    requestAnimationFrame(applyThreeTheme);
+  });
+  btn.setAttribute('aria-label', isLight() ? 'Switch to dark mode' : 'Switch to light mode');
 });
